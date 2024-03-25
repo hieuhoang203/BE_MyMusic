@@ -17,7 +17,7 @@ public class AccountController implements IController<Account, String> {
 
     @Override
     @GetMapping(value = "")
-    public Map<String, Account> select(@RequestParam(value = "status", defaultValue = "DANG_HOAT_DONG", required = false) String status) {
+    public Map<String, Account> select(@RequestParam(value = "status", defaultValue = "Activate", required = false) String status) {
         return this.accountService.select(status);
     }
 

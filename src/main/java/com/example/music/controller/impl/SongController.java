@@ -17,7 +17,7 @@ public class SongController implements IController<Song, Long> {
     
     @Override
     @GetMapping(value = "")
-    public Map<Long, Song> select(@RequestParam(value = "status", defaultValue = "DANG_HOAT_DONG") String status) {
+    public Map<Long, Song> select(@RequestParam(value = "status", defaultValue = "Activate") String status) {
         return this.songService.select(status);
     }
 

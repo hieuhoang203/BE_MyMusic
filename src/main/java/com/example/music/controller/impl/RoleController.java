@@ -17,7 +17,7 @@ public class RoleController implements IController<Role, Byte> {
 
     @Override
     @GetMapping(value = "")
-    public Map<Byte, Role> select(@RequestParam(value = "status", defaultValue = "DANG_HOAT_DONG", required = false) String status) {
+    public Map<Byte, Role> select(@RequestParam(value = "status", defaultValue = "Activate", required = false) String status) {
         return this.roleService.select(status);
     }
 

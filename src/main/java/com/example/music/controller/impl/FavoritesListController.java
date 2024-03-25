@@ -41,7 +41,7 @@ public class FavoritesListController implements IService<FavoritesList, Long> {
 
     @Override
     @GetMapping(value = "")
-    public Map<Long, FavoritesList> select(@RequestParam(value = "status", defaultValue = "DANG_HOAT_DONG", required = false) String status) {
+    public Map<Long, FavoritesList> select(@RequestParam(value = "status", defaultValue = "Activate", required = false) String status) {
         return this.favoritesListService.select(status);
     }
 

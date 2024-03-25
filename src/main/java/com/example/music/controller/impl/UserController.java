@@ -17,7 +17,7 @@ public class UserController implements IController<User, Long> {
     
     @Override
     @GetMapping(value = "")
-    public Map<Long, User> select(@RequestParam(value = "status", defaultValue = "DANG_HOAT_DONG") String status) {
+    public Map<Long, User> select(@RequestParam(value = "status", defaultValue = "Activate") String status) {
         return this.userService.select(status);
     }
 

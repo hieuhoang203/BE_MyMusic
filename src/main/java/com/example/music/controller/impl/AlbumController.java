@@ -17,7 +17,7 @@ public class AlbumController implements IController<Album, Long> {
 
     @Override
     @GetMapping(value = "")
-    public Map<Long, Album> select(@RequestParam(value = "status", defaultValue = "DANG_HOAT_DONG", required = false) String status) {
+    public Map<Long, Album> select(@RequestParam(value = "status", defaultValue = "Activate", required = false) String status) {
         return this.albumService.select(status);
     }
 
