@@ -152,7 +152,7 @@ public class SongService implements IService<Song, Long> {
         for (Integer artisIndex : songDTO.getArtis()) {
             artis.add(userRepository.findById(artisIndex).orElse(null));
         }
-        Album album = albumRepository.findById(songDTO.getAlbum()).orElse(null);
+        Album album = songDTO.getAlbum() != null ? albumRepository.findById(songDTO.getAlbum()).orElse(null) : null;
         song.setArtis(artis);
         song.setGenres(genres);
         song.setAlbum(album);

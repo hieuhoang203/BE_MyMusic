@@ -28,7 +28,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     @Query(value = "select * from song where status = 'Activate' or status = 'ShutDown' order by id desc", nativeQuery = true)
     Page<Song> getAllSong(Pageable pageable);
-
+    
     @Transactional
     @Modifying
     @Query(value = "update song set status = ?1 where id = ?2", nativeQuery = true)

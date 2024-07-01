@@ -1,7 +1,10 @@
 package com.example.music.controller.admin;
 
 import com.example.music.dto.SongDTO;
+import com.example.music.dto.WorkDTO;
+import com.example.music.entity.Genres;
 import com.example.music.entity.Song;
+import com.example.music.entity.User;
 import com.example.music.service.impl.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,9 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/admin/song")
+@RequestMapping(value = "/song/admin")
 @CrossOrigin("*")
 public class SongAdminController {
     
@@ -55,6 +59,7 @@ public class SongAdminController {
         try {
             return new ResponseEntity<>(this.songService.adminUpdateSong(id, songDTO), HttpStatus.ACCEPTED);
         } catch (Exception e) {
+            System.out.println(songDTO.getAvatar());
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -68,11 +73,20 @@ public class SongAdminController {
         }
     }
 
-    @DeleteMapping(value = "/search/{id}")
-    public ResponseEntity<Song> search(@PathVariable Long id) {
+    @GetMapping(value = "/search/{id}")
+    public ResponseEntity<WorkDTO> search(@PathVariable Long id) {
         try {
-            return new ResponseEntity<>(this.songService.detail(id), HttpStatus.OK);
+            Song song = this.songService.detail(id);
+            WorkDTO songDTO = WorkDTO.builder()
+                    .name(song.getName())
+                    .album(song.getAlbum() != null ? song.getAlbum().getId() : null)
+                    .artis(song.getArtis())
+                    .genres(song.getGenres())
+                    .duration(song.getDuration())
+                    .build();
+            return new ResponseEntity<>(songDTO, HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }

@@ -44,7 +44,12 @@ public class Song implements Serializable {
 
     private Integer view;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "songGenres",
+            joinColumns = @JoinColumn(name = "id_song"),
+            inverseJoinColumns = @JoinColumn(name = "id_genres")
+    )
     private Set<Genres> genres;
 
     private Date date_create;
@@ -56,6 +61,6 @@ public class Song implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
     @JsonIgnore
-    private Set<Favorite> favorite;
+    private Set<Favorite> favorite; 
 
 }

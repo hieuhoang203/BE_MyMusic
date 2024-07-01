@@ -47,7 +47,8 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/genres/admin/**",
                         "/album/admin/**",
-                        "/user/admin/**"
+                        "/user/admin/**",
+                        "/song/admin/**"
                 ).hasRole(String.valueOf(Role.ADMIN))
                 .and()
                 .authorizeHttpRequests()

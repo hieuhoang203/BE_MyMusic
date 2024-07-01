@@ -33,12 +33,7 @@ public class Genres implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "songGenres",
-            joinColumns = @JoinColumn(name = "id_genres"),
-            inverseJoinColumns = @JoinColumn(name = "id_song")
-    )
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "genres")
     @JsonIgnore
     private Set<Song> songs;
 

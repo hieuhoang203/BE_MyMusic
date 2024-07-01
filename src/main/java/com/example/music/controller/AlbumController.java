@@ -1,7 +1,7 @@
 package com.example.music.controller;
 
-import com.cloudinary.utils.ObjectUtils;
 import com.example.music.dao.AlbumSelect;
+import com.example.music.dto.AlbumDTO;
 import com.example.music.entity.Album;
 import com.example.music.service.impl.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +19,6 @@ import java.util.Map;
 @RequestMapping(value = "/album")
 @CrossOrigin("*")
 public class AlbumController {
-
-    private final Map params = ObjectUtils.asMap(
-            "folder", "imageAlbum",
-            "resource_type", "image"
-    );
 
     @Autowired
     private AlbumService albumService;
@@ -44,16 +39,16 @@ public class AlbumController {
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<Album> insert(@RequestBody Album album) {
+    public ResponseEntity<Album> insert(@ModelAttribute AlbumDTO album) {
         try {
-            return new ResponseEntity<>(this.albumService.insert(album), HttpStatus.CREATED);
+            return new ResponseEntity<>(this.albumService.insertAlbum(album), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(album, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<Album> update(@PathVariable Long id, @RequestBody Album album) {
+    public ResponseEntity<Album> update(@ModelAttribute Long id, @RequestBody Album album) {
         try {
             return new ResponseEntity<>(this.albumService.update(id, album), HttpStatus.ACCEPTED);
         } catch (Exception e) {
