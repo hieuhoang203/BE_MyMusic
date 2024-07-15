@@ -1,0 +1,553 @@
+select * from genres g  ;
+
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 1, 'GR01', ' Viet Nam', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 2, 'GR02', 'K-POP', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 3, 'GR03', 'Podcast', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 4, 'GR04', 'Love', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 5, 'GR05', 'Anime', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 6, 'GR06', 'China', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 7, 'GR07', 'Folk', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 8, 'GR08', 'Rap', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 9, 'GR09', 'EDM', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 10, 'GR10', 'Lofi', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 11, 'GR11', 'Event', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 12, 'GR12', 'Children', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 13, 'GR13', 'Revolution', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 14, 'GR14', 'Japan', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 15, 'GR15', 'Country', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 16, 'GR16', 'Latin America', 'Activate');
+INSERT INTO genres
+(date_create, date_update, id, code, name, status)
+VALUES('2024-04-26', NULL, 17, 'GR17', 'SoundTrack', 'Activate');
+
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'chalieputh@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'dancaquanhobacninh@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'denvauu@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-11', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'dieuthuy203@gmail.com', 'ADMIN', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'domixigi@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'gducky@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'giangoiradio@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-11', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'hieuhv203@gmail.com', 'ADMIN', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'hoaminzi@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'hoangthuylinh@g,ail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'huongtucover@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'huyr1995@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'karikrapper@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'lowgdongdaa@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'masewofficial@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-08', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'minhanh203@gmail.com', 'USER', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'nghiemvuhoanglong@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-13', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'ngoclan202@gmail.com', 'USER', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'nguyendieuhuyenn@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'obitooficial@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'ogenusofficial@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-13', NULL, '$2a$10$IYPYwuy32MNqg0LFoXJuyekiBkAS2IFk7Ln4gBl/i0hjglv57hfgu', 'radwimpsofficial@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'ronboogzzz@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'sontungmtpofficial@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'taylorswift1989america@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-11', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'thuylinh205@gmail.com', 'USER', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'trinhconson@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-11', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'truclhph26981@fpt.edu.vn', 'ADMIN', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'tungteaa@gmail.com', 'ARTIS', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-08', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'vananh203@gmail.com', 'USER', 'Activate');
+INSERT INTO account
+(date_create, date_update, pass, login, `role`, status)
+VALUES('2024-05-02', NULL, '$2a$10$Dx7JjbFPFdpDVsfWd43pxOafNxV1ffS96u7/gGzAfqp.I0cZ57Tvu', 'vuofficial@gmail.com', 'ARTIS', 'Activate');
+
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2024-05-08', '2024-05-08', '2024-05-11', 0, 1, 'minhanh203@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1715412617/avatar/xxwvridmrr5flivugjkc.jpg', 'Minh Anh', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2003-02-01', '2024-05-08', '2024-05-11', 0, 2, 'vananh203@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1715412426/avatar/ixgypzad79newwrpgi1r.jpg', 'Vân Anh', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2003-08-26', '2024-05-11', NULL, 0, 3, 'truclhph26981@fpt.edu.vn', 'https://res.cloudinary.com/hieuhv203/image/upload/v1715412737/avatar/mpxlazbvqvq3kxb4g6g0.png', 'Hồng Trúc', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2003-06-08', '2024-05-11', NULL, 0, 4, 'dieuthuy203@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1715412661/avatar/w2h3mmo0sonfi42gt4bf.jpg', 'Diệu Thúy', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2003-09-08', '2024-05-11', NULL, 1, 5, 'hieuhv203@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1715412944/avatar/n7ih7sdotxismtzthxas.png', 'Hoàng Hiếu', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2005-10-07', '2024-05-11', NULL, 0, 6, 'thuylinh205@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1715413031/avatar/pv7wlciormp9uobhxgzv.jpg', 'Thùy Linh', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1995-04-04', '2024-05-02', NULL, 1, 7, 'huyr1995@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714587881/avatar/dmyi6mxj1qpn9ej339jp.jpg', 'HuyR', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1994-07-05', '2024-05-02', NULL, 1, 8, 'sontungmtpofficial@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714588026/avatar/fwpebdrz0o38nqifpd19.webp', 'Sơn Tùng MTP', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1995-05-31', '2024-05-02', NULL, 0, 9, 'hoaminzi@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714588122/avatar/jnqhb0wa7itcd8rb5lhw.jpg', 'Hòa Minzi', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1989-05-13', '2024-05-02', NULL, 1, 10, 'denvauu@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714588241/avatar/wkbwdkvdjf4xczcdkq7g.jpg', 'Đen Vâu', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2000-05-09', '2024-05-02', NULL, 1, 11, 'ronboogzzz@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714588364/avatar/acnzqv8kb1xqfuoqbyjt.jpg', 'Ronboogz', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2003-03-28', '2024-05-02', NULL, 0, 12, 'nguyendieuhuyenn@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714588528/avatar/tlljjh1efaip8jy8uvhr.jpg', 'Pháo', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1990-10-21', '2024-05-02', NULL, 1, 13, 'tungteaa@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714588737/avatar/tofpup7we789agkbwaqg.jpg', 'Tùng Tea', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1997-07-23', '2024-05-02', NULL, 1, 14, 'lowgdongdaa@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714588874/avatar/etrofamr9vhdfzfebxsj.jpg', 'LowG', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1999-03-02', '2024-05-02', NULL, 1, 15, 'nghiemvuhoanglong@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714589041/avatar/jhff3m3ukhtpwvzas6x6.webp', 'MCK', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2003-09-08', '2024-05-02', NULL, 0, 16, 'huongtucover@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714589316/avatar/imnt8uxgoi1w4fbra0z0.jpg', 'Hương Tú Cover', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1989-12-13', '2024-05-02', NULL, 0, 17, 'taylorswift1989america@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714589717/avatar/f8a1hu7xumzqgxbdlmol.png', 'Taylor Swift', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2024-05-02', '2024-05-02', NULL, 0, 18, 'dancaquanhobacninh@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714589861/avatar/pypgn3p2rlalmstcd1w6.jpg', 'Dân ca Bắc Ninh', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1995-10-03', '2024-05-02', NULL, 1, 19, 'vuofficial@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714589927/avatar/mgk1t5sbqlliebaei1fm.webp', 'Vũ', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1939-02-28', '2024-05-02', NULL, 1, 20, 'trinhconson@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714590039/avatar/p3zfvwvkjjjxahblmrk4.jpg', 'Trịnh Công Sơn', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1989-09-12', '2024-05-02', NULL, 1, 21, 'domixigi@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714590700/avatar/jgbixf4xhbprwxjgqq0q.webp', 'Mixi Gaming', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1988-08-11', '2024-05-02', NULL, 0, 22, 'hoangthuylinh@g,ail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714590832/avatar/l7kfm8izwue0sxwfngbe.jpg', 'Hoàng Thùy Linh', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1998-09-18', '2024-05-02', NULL, 1, 23, 'gducky@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714591031/avatar/phf8zgdnzp98y4e7tieo.jpg', 'GDucky', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1989-04-12', '2024-05-02', NULL, 1, 24, 'karikrapper@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714591098/avatar/ahhzeyawciekmzjggayf.webp', 'Karik', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1997-09-18', '2024-05-02', NULL, 1, 25, 'ogenusofficial@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714591257/avatar/tvvvvhsyqkyiwktw7shq.webp', 'Ogenus', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2001-09-20', '2024-05-02', NULL, 1, 26, 'obitooficial@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714591324/avatar/m6nradmhduezzeljnugu.webp', 'Obito', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1991-12-02', '2024-05-02', '2024-05-29', 1, 27, 'chalieputh@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714591519/avatar/zst3uca2htzun9dpivak.jpg', 'Chalie Puth', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2024-05-02', '2024-05-02', NULL, 0, 28, 'giangoiradio@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714591632/avatar/ugmlzrrfw2ardhnygugd.jpg', 'Giang ơi Radio', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('1996-08-06', '2024-05-02', NULL, 1, 29, 'masewofficial@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1714591705/avatar/f9cszctfjbnskapoikc3.jpg', 'Masew', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2002-10-27', '2024-05-13', '2024-05-13', 0, 30, 'ngoclan202@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1715617522/avatar/u8l55eetz22l9sowwxa9.jpg', 'Ngọc Lan', 'Activate');
+INSERT INTO `user`
+(birthday, date_create, date_update, gender, id, account, avatar, name, status)
+VALUES('2024-05-13', '2024-05-13', NULL, 1, 31, 'radwimpsofficial@gmail.com', 'https://res.cloudinary.com/hieuhv203/image/upload/v1715619343/avatar/sxfw3q2nriywisr5injz.jpg', 'RADWIMPS', 'Activate');
+
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-13', NULL, 207, 0, NULL, 1, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715618606/imageSong/tf9qmybz40pywflbnwdr.jpg', 'Bèo dạt mây trôi', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715618609/songs/ymbxhbfjnh2hi43hohnh.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-13', NULL, 199, 0, NULL, 2, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715619071/imageSong/dxniepq5bzvhpic5mga5.jpg', 'Mây lang thang', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715619083/songs/o7rxzvsfkytoix0hpkxs.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-13', NULL, 213, 0, NULL, 3, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715619135/imageSong/fg9fpp0wvs6tdi96fvfl.jpg', 'Cô gái M52', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715619147/songs/itxwwlopcyg4ktknwprl.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-13', NULL, 129, 0, NULL, 4, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715619410/imageSong/jtvftwdl3pogiyaphnbk.jpg', 'Yume Touro', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715619413/songs/ll92whrp8xoh3rvx51sl.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 265, 0, NULL, 5, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715621079/imageSong/r8p03lcehfjmzp7jc9i5.jpg', 'Đưa nhau đi trốn', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715621083/songs/kzgl6inybggxh7rfarbe.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 257, 0, NULL, 6, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715621227/imageSong/p4m0wwltnnpdf3mp0kd0.jpg', 'Mười năm', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715621232/songs/khrjsslwitd3tiv2tggf.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 252, 0, NULL, 7, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715621342/imageSong/cqjynm7jp1mxxsy8ezvp.webp', 'Trời hôm nay nhiều mây cực', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715621347/songs/pdsgyayszlnscg9ex2cf.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 216, 0, NULL, 8, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715621454/imageSong/pee4jyexxc1uoobwmn7y.jpg', 'Hai triệu năm', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715621458/songs/ublvmsdvruzfovzixxcp.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 257, 0, NULL, 9, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715621620/imageSong/vnops43blh4do8bqsiue.jpg', 'Nấu ăn cho em', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715621623/songs/mzs4asdszyvjotu5maai.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 405, 0, NULL, 10, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715621807/imageSong/if0sii0f8poi7tcdbp9a.jpg', 'Mang tiền về cho mẹ', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715621813/songs/tcazwrsg9rwbedttfggj.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 253, 0, NULL, 11, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715622080/imageSong/cyey7opku4dl4m8ah5vd.jpg', 'Mười nhớ', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715622085/songs/nes6xa2jgac4mk5vj9ad.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 236, 0, NULL, 12, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715622187/imageSong/wsqwy03ckfftg32hmo7c.jpg', 'Ngồi tựa mạn thuyền', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715622190/songs/jmavbmkv8eqii1qpzeaz.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 299, 0, NULL, 13, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715622296/imageSong/addcbbxdk6o7mhvistyy.jpg', 'Bèo dạt mây trôi', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715622299/songs/cz3irn7hcml6ubnulbcz.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 150, 0, NULL, 14, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715622788/imageSong/ultvs3z4ntjsolncpnqg.jpg', 'Cruel summer', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715622815/songs/n1hzion42wjjtdeuyfcq.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 209, 0, NULL, 15, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715623171/imageSong/octjdbqsjgcbbluiwaye.jpg', 'Hẹn em kiếp sau', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715623175/songs/nihmzxmqd7ukycm2akkv.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 223, 0, NULL, 16, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715623292/imageSong/t6ftjbh1bw8t9damcdj9.jpg', 'Lấy chồng sớm làm gì', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715623302/songs/keuckgekufvzuf91bntd.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 217, 0, NULL, 17, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715623509/imageSong/qlcbdkrkiywzunlr24ep.jpg', 'Gió đánh đò đưa', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715623512/songs/oadsd9qdv8svtpggif4w.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 257, 0, NULL, 18, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715623600/imageSong/ovtieh8w3ocj8jef6joc.jpg', 'Ông trời làm tội anh chưa', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715623603/songs/itcxsujkvgwmyzxritub.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 219, 0, NULL, 19, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715623763/imageSong/hzvu9xsmwhkjjn6vina5.jpg', 'Quê tôi', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715623767/songs/vahy2f9cku3axdrq4yox.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 238, 0, NULL, 20, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715623971/imageSong/plaigjg3qsbzyjy3vzoq.jpg', 'Giấc mơ trưa', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715623975/songs/w0ldhm7d1mfuw25m6jlt.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 219, 0, NULL, 21, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715624090/imageSong/ro2pwbsmve7y515zgzjs.jpg', 'Stream đến bao giờ', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715624094/songs/zwvgmvu6wf79q2iboz3q.mp3', 'Activate');
+INSERT INTO song
+(date_create, date_update, duration, `view`, album, id, avatar, name, url, status)
+VALUES('2024-05-14', NULL, 201, 0, NULL, 22, 'https://res.cloudinary.com/hieuhv203/image/upload/v1715624258/imageSong/s31tqm2wnb9nnrp5qjri.jpg', 'Độ tộc 2', 'https://res.cloudinary.com/hieuhv203/video/upload/v1715624261/songs/w5ark4shz4bxf1rg8apa.mp3', 'Activate');
+
+INSERT INTO own
+(author, `work`)
+VALUES(16, 1);
+INSERT INTO own
+(author, `work`)
+VALUES(13, 2);
+INSERT INTO own
+(author, `work`)
+VALUES(7, 3);
+INSERT INTO own
+(author, `work`)
+VALUES(31, 4);
+INSERT INTO own
+(author, `work`)
+VALUES(10, 5);
+INSERT INTO own
+(author, `work`)
+VALUES(10, 6);
+INSERT INTO own
+(author, `work`)
+VALUES(10, 7);
+INSERT INTO own
+(author, `work`)
+VALUES(10, 8);
+INSERT INTO own
+(author, `work`)
+VALUES(10, 9);
+INSERT INTO own
+(author, `work`)
+VALUES(10, 10);
+INSERT INTO own
+(author, `work`)
+VALUES(18, 11);
+INSERT INTO own
+(author, `work`)
+VALUES(18, 12);
+INSERT INTO own
+(author, `work`)
+VALUES(18, 13);
+INSERT INTO own
+(author, `work`)
+VALUES(17, 14);
+INSERT INTO own
+(author, `work`)
+VALUES(16, 15);
+INSERT INTO own
+(author, `work`)
+VALUES(16, 16);
+INSERT INTO own
+(author, `work`)
+VALUES(16, 17);
+INSERT INTO own
+(author, `work`)
+VALUES(16, 18);
+INSERT INTO own
+(author, `work`)
+VALUES(16, 19);
+INSERT INTO own
+(author, `work`)
+VALUES(16, 20);
+INSERT INTO own
+(author, `work`)
+VALUES(21, 21);
+INSERT INTO own
+(author, `work`)
+VALUES(12, 22);
+INSERT INTO own
+(author, `work`)
+VALUES(21, 22);
+INSERT INTO own
+(author, `work`)
+VALUES(29, 22);
+INSERT INTO own
+(author, `work`)
+VALUES(8, 23);
+INSERT INTO own
+(author, `work`)
+VALUES(8, 24);
+INSERT INTO own
+(author, `work`)
+VALUES(8, 25);
+INSERT INTO own
+(author, `work`)
+VALUES(27, 28);
+
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 1);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(15, 1);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 2);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(8, 2);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 3);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(8, 3);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(5, 4);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(14, 4);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 5);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(8, 5);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 6);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(8, 6);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 7);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(8, 7);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 8);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(8, 8);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 9);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(8, 9);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 10);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(8, 10);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 11);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(15, 11);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 12);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(4, 12);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(15, 12);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 13);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(4, 13);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(15, 13);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(4, 14);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(16, 14);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 15);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(4, 15);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 16);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(4, 16);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 17);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(4, 17);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(15, 17);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 18);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(4, 18);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 19);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(15, 19);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 20);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(7, 20);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 21);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(8, 21);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 22);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(8, 22);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 23);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 24);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(1, 25);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(4, 25);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(4, 28);
+INSERT INTO song_genres
+(id_genres, id_song)
+VALUES(16, 28);
