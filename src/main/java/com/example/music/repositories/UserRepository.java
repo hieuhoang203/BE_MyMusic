@@ -37,10 +37,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<UserDAO> getNewUserOrArtis(String role);
 
     @Transactional
-    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.account as 'email', user.gender as 'gender', user.birthday as 'birthday', user.date_create as 'dateCreate', user.status as 'status' from user join mymusic.account a on a.login = user.account where a.role = 'USER' or a.role = 'ADMIN' order by user.id desc", nativeQuery = true)
+    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.account as 'email', user.gender as 'gender', user.birthday as 'birthday', user.date_create as 'dateCreate', user.status as 'status' from user join account a on a.login = user.account where a.role = 'USER' or a.role = 'ADMIN' order by user.id desc", nativeQuery = true)
     Page<UserDAO> getAllUser(Pageable pageable);
 
-    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.gender as 'gender', user.account as 'email', user.birthday as 'birthday', user.date_create as 'dateCreate', user.status as 'status' from user join mymusic.account a on a.login = user.account where a.role = 'USER' or a.role = 'ADMIN' and user.status = ?1 order by user.id desc", nativeQuery = true)
+    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.gender as 'gender', user.account as 'email', user.birthday as 'birthday', user.date_create as 'dateCreate', user.status as 'status' from user join account a on a.login = user.account where a.role = 'USER' or a.role = 'ADMIN' and user.status = ?1 order by user.id desc", nativeQuery = true)
     Page<UserDAO> getUserByStatus(String status, Pageable pageable);
 
     @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.gender as 'gender'\n" +
@@ -67,7 +67,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void updateStatusUser(Integer id, String status);
 
     @Transactional
-    @Query(value = "select user.id as 'value', user.name as 'label' from user join mymusic.account a on a.login = user.account\n" +
+    @Query(value = "select user.id as 'value', user.name as 'label' from user join account a on a.login = user.account\n" +
             "where a.role = 'ARTIS' and user.status = 'Activate'", nativeQuery = true)
     List<ArtisSelect> getArtisForSelect();
 
