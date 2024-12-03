@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SongRepository extends JpaRepository<Song, Long> {
+public interface SongRepository extends JpaRepository<Song, String> {
 
     @Modifying
     @Transactional
@@ -20,18 +20,18 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     void updateStatus(Long aLong);
 
     @Transactional
-    @Query(value = "select * from song where status = ?1 order by id desc", nativeQuery = true)
+    @Query(value = "select * from song where status = ?1 order by create_date desc", nativeQuery = true)
     List<Song> select(String status);
 
-    @Query(value = "select * from song where status = ?1 order by id desc", nativeQuery = true)
+    @Query(value = "select * from song where status = ?1 order by create_date desc", nativeQuery = true)
     Page<Song> getSong(String status, Pageable pageable);
 
-    @Query(value = "select * from song where status = 'Activate' or status = 'ShutDown' order by id desc", nativeQuery = true)
+    @Query(value = "select * from song where status = 'Activate' or status = 'ShutDown' order by create_date desc", nativeQuery = true)
     Page<Song> getAllSong(Pageable pageable);
-    
-    @Transactional
-    @Modifying
-    @Query(value = "update song set status = ?1 where id = ?2", nativeQuery = true)
-    void updateStatus(String status, Long id);
+
+//    @Transactional
+//    @Modifying
+//    @Query(value = "update song set status = ?1 where id = ?2", nativeQuery = true)
+//    void updateStatus(String status, String id);
 
 }

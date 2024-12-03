@@ -19,11 +19,11 @@ public class SongDTO {
 
     private MultipartFile sound;
 
-    private Long album;
+    private String album;
 
-    private List<Integer> artis;
+    private List<String> artis;
 
-    private List<Byte> genres;
+    private List<String> genres;
 
     private Short duration;
 

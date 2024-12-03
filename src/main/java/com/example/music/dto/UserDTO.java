@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class UserDTO {
 
-    private Integer id;
+    private String id;
 
     private String name;
 

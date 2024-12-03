@@ -13,27 +13,24 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface GenresRepository extends JpaRepository<Genres, Byte> {
+public interface GenresRepository extends JpaRepository<Genres, String> {
 
     @Modifying
     @Transactional
-    @Query(value = "update genres set status = 'ShutDown' where id = ?1", nativeQuery = true)
-    void updateStatus(Byte aByte);
+    @Query(value = "update genres set status = ?2 where id = ?1", nativeQuery = true)
+    void changeStatus(String id, String status);
 
-    @Modifying
-    @Transactional
-    @Query(value = "update genres set status = 'Activate' where id = ?1", nativeQuery = true)
-    void returnStatus(Byte aByte);
-
-    @Transactional
-    @Query(value = "select * from genres where status = ?1 order by date_create desc, id desc", nativeQuery = true)
-    List<Genres> select(String status);
-
-    @Query(value = "select * from genres where status = ?1 order by date_create desc, id desc", nativeQuery = true)
+    @Query(value = "select * from genres where status = ?1 order by create_date desc, id desc", nativeQuery = true)
     Page<Genres> getGenres(String status, Pageable pageable);
 
-    @Query(value = "select * from genres order by date_create desc, id desc", nativeQuery = true)
+    @Query(value = "select * from genres order by create_date desc, id desc", nativeQuery = true)
     Page<Genres> getAll(Pageable pageable);
+
+    @Query(value = "select code from genres", nativeQuery = true)
+    List<String> getAllCode();
+
+    @Query(value = "select name from genres", nativeQuery = true)
+    List<String> getAllName();
 
     @Query(value = "select id as 'value', name as 'label' from genres where status = 'Activate'", nativeQuery = true)
     List<GenresSelect> getGenresForSelect();

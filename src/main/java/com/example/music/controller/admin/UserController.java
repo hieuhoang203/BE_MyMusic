@@ -77,7 +77,7 @@ public class UserController {
                     .name(user.getName())
                     .gender(user.getGender() != null ? user.getGender().toString() : "")
                     .email(user.getAccount().getLogin())
-                    .birthday(user.getBirthday() != null ? user.getBirthday().toString() : user.getDate_create().toString())
+                    .birthday(user.getBirthday() != null ? user.getBirthday().toString() : user.getCreate_date().toString())
                     .role(user.getAccount().getRole().toString())
                     .build();
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
@@ -124,7 +124,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/update-status")
-    public ResponseEntity<User> updateStatus(@RequestParam(name = "id") Integer id, @RequestParam(name = "account") String account, @RequestParam(name = "status") String status) {
+    public ResponseEntity<User> updateStatus(@RequestParam(name = "id") String id, @RequestParam(name = "account") String account, @RequestParam(name = "status") String status) {
         try {
             return new ResponseEntity<>(this.userService.updateStatusUser(id, account, status), HttpStatus.OK);
         } catch (Exception e) {

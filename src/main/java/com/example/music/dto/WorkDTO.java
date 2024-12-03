@@ -1,13 +1,12 @@
 package com.example.music.dto;
 
-import com.example.music.entity.Genres;
-import com.example.music.entity.User;
+import com.example.music.entity.Own;
+import com.example.music.entity.SongGenres;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -21,11 +20,11 @@ public class WorkDTO {
 
     private MultipartFile sound;
 
-    private Long album;
+    private String album;
 
-    private Set<User> artis;
+    private Set<Own> artis;
 
-    private Set<Genres> genres;
+    private Set<SongGenres> genres;
 
     private Short duration;
 

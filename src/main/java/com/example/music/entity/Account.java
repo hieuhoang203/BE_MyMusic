@@ -1,39 +1,56 @@
 package com.example.music.entity;
 
-import com.example.music.entity.comon.Role;
-import com.example.music.entity.comon.Status;
-import jakarta.persistence.*;
-import lombok.*;
+import com.example.music.entity.comon.Constant;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
 @Table(name = "account")
-@Setter
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 public class Account implements Serializable {
 
     @Id
+    @Column(name = "login", length = 40)
     private String login;
 
-    @Column(length = 60)
+    @Column(name = "pass", length = 40)
     private String pass;
 
-    private Date date_create;
+    @Column(name = "create_date")
+    private Date create_date;
 
-    private Date date_update;
+    @Column(name = "create_by", length = 40)
+    private String create_by;
+
+    @Column(name = "update_date")
+    private Date update_date;
+
+    @Column(name = "update_by", length = 40)
+    private String update_by;
 
     @Enumerated(value = EnumType.STRING)
-    private Status status;
+    @Column(name = "status")
+    private String status;
 
     @OneToOne(mappedBy = "account")
     private User user;
 
     @Enumerated(value = EnumType.STRING)
-    private Role role;
+    private String role;
 
 }

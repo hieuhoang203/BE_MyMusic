@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
+public interface FavoriteRepository extends JpaRepository<Favorite, String> {
 
     @Modifying
     @Transactional
@@ -18,7 +18,7 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     void updateStatus(Long aLong);
 
     @Transactional
-    @Query(value = "select * from favorite where status = ?1 order by date_create desc, id desc", nativeQuery = true)
+    @Query(value = "select * from favorite where status = ?1 order by create_date desc, id desc", nativeQuery = true)
     List<Favorite> select(String status);
 
 }

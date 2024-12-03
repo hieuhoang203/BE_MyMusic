@@ -1,6 +1,6 @@
 package com.example.music.securityConfig;
 
-import com.example.music.entity.comon.Role;
+import com.example.music.entity.comon.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,13 +49,13 @@ public class SecurityConfig {
                         "/album/admin/**",
                         "/user/admin/**",
                         "/song/admin/**"
-                ).hasRole(String.valueOf(Role.ADMIN))
+                ).hasRole(String.valueOf(Constant.Role.ADMIN))
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers(
                         "/song/artis/**",
                         "/album/artis/**"
-                ).hasRole(String.valueOf(Role.ARTIS))
+                ).hasRole(String.valueOf(Constant.Role.ARTIS))
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

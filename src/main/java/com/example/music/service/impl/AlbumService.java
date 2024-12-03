@@ -6,7 +6,6 @@ import com.example.music.dao.AlbumSelect;
 import com.example.music.dto.AlbumDTO;
 import com.example.music.entity.Album;
 import com.example.music.entity.User;
-import com.example.music.entity.comon.Status;
 import com.example.music.repositories.AlbumRepository;
 import com.example.music.repositories.UserRepository;
 import com.example.music.service.IService;

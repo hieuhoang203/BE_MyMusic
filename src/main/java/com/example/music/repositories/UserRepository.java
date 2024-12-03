@@ -14,33 +14,27 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, String> {
 
     @Transactional
-    @Modifying
-    @Query(value = "update user set status = 'ShutDown' WHERE id = ?1", nativeQuery = true)
-    void updateStatus(Integer id);
-
-    @Transactional
-    @Query(value = "select * from user where status = ?1 order by id desc", nativeQuery = true)
+    @Query(value = "select * from user where status = ?1 order by create_date desc", nativeQuery = true)
     List<User> select(String status);
 
-    @Query(value = "select * from user where status = ?1 order by id desc", nativeQuery = true)
+    @Query(value = "select * from user where status = ?1 order by create_date desc", nativeQuery = true)
     Page<User> getUser(String status, Pageable pageable);
 
     @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.account as 'email', user.gender as 'gender', user.birthday as 'birthday', " +
-            "user.date_create as 'dateCreate', user.status as 'status' from user join account a on a.login = user.account " +
-            "where a.role = ?1 and user.status = 'Activate' order by user.id desc limit 3", nativeQuery = true)
+            "user.create_date as 'dateCreate', user.status as 'status' from user join account a on a.login = user.account " +
+            "where a.role = ?1 and user.status = 'Activate' order by user.create_date desc limit 3", nativeQuery = true)
     List<UserDAO> getNewUserOrArtis(String role);
 
     @Transactional
-    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.account as 'email', user.gender as 'gender', user.birthday as 'birthday', user.date_create as 'dateCreate', user.status as 'status' from user join account a on a.login = user.account where a.role = 'USER' or a.role = 'ADMIN' order by user.id desc", nativeQuery = true)
+    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.account as 'email', user.gender as 'gender', user.birthday as 'birthday', user.create_date as 'dateCreate', user.status as 'status' from user join account a on a.login = user.account where a.role = 'USER' or a.role = 'ADMIN' order by user.create_date desc", nativeQuery = true)
     Page<UserDAO> getAllUser(Pageable pageable);
 
-    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.gender as 'gender', user.account as 'email', user.birthday as 'birthday', user.date_create as 'dateCreate', user.status as 'status' from user join account a on a.login = user.account where a.role = 'USER' or a.role = 'ADMIN' and user.status = ?1 order by user.id desc", nativeQuery = true)
+    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.gender as 'gender', user.account as 'email', user.birthday as 'birthday', user.create_date as 'dateCreate', user.status as 'status' from user join account a on a.login = user.account where a.role = 'USER' or a.role = 'ADMIN' and user.status = ?1 order by user.create_date desc", nativeQuery = true)
     Page<UserDAO> getUserByStatus(String status, Pageable pageable);
 
     @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.gender as 'gender'\n" +
@@ -49,7 +43,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "left join own o on user.id = o.author\n" +
             "join account a on a.login = user.account\n" +
             "where a.role = 'ARTIS'\n" +
-            "group by user.id order by user.id desc ", nativeQuery = true)
+            "group by user.id order by user.create_date desc ", nativeQuery = true)
     Page<ArtisDAO> getAllArtis(Pageable pageable);
 
     @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.gender as 'gender'\n" +
@@ -58,13 +52,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "left join own o on user.id = o.author\n" +
             "join account a on a.login = user.account\n" +
             "where a.role = 'ARTIS' and user.status = ?1\n" +
-            "group by user.id order by user.id desc ", nativeQuery = true)
+            "group by user.id order by user.create_date desc ", nativeQuery = true)
     Page<ArtisDAO> getArtisByStatus(String status, Pageable pageable);
 
     @Transactional
     @Modifying
     @Query(value = "update user set status = ?2 where id = ?1", nativeQuery = true)
-    void updateStatusUser(Integer id, String status);
+    void updateStatusUser(String id, String status);
 
     @Transactional
     @Query(value = "select user.id as 'value', user.name as 'label' from user join account a on a.login = user.account\n" +
@@ -79,5 +73,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "select u.id, u.name, u.gender, u.birthday, u.avatar, a.role from user u left join account a on a.login = u.account\n" +
             "where u.account = ?1", nativeQuery = true)
     UserResponse getUserResponse(String login);
+
+    @Query(value = "select account from user", nativeQuery = true)
+    List<String> getAllEmail();
 
 }

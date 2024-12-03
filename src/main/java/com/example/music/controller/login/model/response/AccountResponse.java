@@ -1,6 +1,5 @@
 package com.example.music.controller.login.model.response;
 
-import com.example.music.entity.comon.Status;
 import lombok.Data;
 
 @Data

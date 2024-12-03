@@ -19,7 +19,7 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     void updateStatus(String userName);
 
     @Transactional
-    @Query(value = "select * from account where status = ?1 order by date_create desc, id desc", nativeQuery = true)
+    @Query(value = "select * from account where status = ?1 order by create_date desc, id desc", nativeQuery = true)
     List<Account> select(String status);
 
     @Transactional

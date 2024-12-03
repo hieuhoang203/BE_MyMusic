@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AlbumRepository extends JpaRepository<Album, Long> {
+public interface AlbumRepository extends JpaRepository<Album, String> {
 
     @Modifying
     @Transactional
@@ -22,7 +22,7 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
     void updateStatus(Long aLong);
 
     @Transactional
-    @Query(value = "select * from album where status = ?1 order by date_create desc, id desc", nativeQuery = true)
+    @Query(value = "select * from album where status = ?1 order by create_date desc, id desc", nativeQuery = true)
     List<Album> select(String status);
 
     @Transactional
