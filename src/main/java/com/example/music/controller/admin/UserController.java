@@ -1,21 +1,24 @@
 package com.example.music.controller.admin;
 
-import com.example.music.dao.ArtisDAO;
-import com.example.music.dao.ArtisSelect;
-import com.example.music.dao.UserDAO;
 import com.example.music.dto.UserDTO;
-import com.example.music.entity.User;
-import com.example.music.service.impl.UserService;
+import com.example.music.entity.comon.ResponseData;
+import com.example.music.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping(value = "/user/admin")
@@ -25,129 +28,73 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "")
-    public Page<User> getObject(@RequestParam(name = "status", defaultValue = "Activate") String status, @RequestParam(name = "page", defaultValue = "0") Integer page) {
-        Pageable pageable = PageRequest.of(0, 5);
-        return this.userService.getObject(status, pageable);
-    }
-
-    @GetMapping(value = "/select")
-    public ResponseEntity<Map<Integer, User>> select(@RequestParam(value = "status", defaultValue = "Activate") String status) {
-        try {
-            return new ResponseEntity<>(this.userService.select(status), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping(value = "/verify")
+    public CompletableFuture<ResponseData> verifyUser(@RequestParam(name = "type") Byte type, @ModelAttribute UserDTO userDTO) {
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.verifyUser(type, userDTO)));
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<User> insert(@ModelAttribute UserDTO userDTO) {
-        try {
-            return new ResponseEntity<>(this.userService.insert(userDTO), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public CompletableFuture<ResponseData> insert(@ModelAttribute UserDTO userDTO) throws IOException, ParseException {
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.insert(userDTO)));
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<User> update(@PathVariable Integer id, @ModelAttribute UserDTO userDTO) {
-        try {
-            return new ResponseEntity<>(this.userService.update(id, userDTO), HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public CompletableFuture<ResponseData> update(@PathVariable String id, @ModelAttribute UserDTO userDTO) throws Exception {
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.update(id, userDTO)));
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<User> delete(@PathVariable Integer id) {
-        try {
-            return new ResponseEntity<>(this.userService.delete(id), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    @PutMapping(value = "/change-status/{id}")
+    public CompletableFuture<ResponseData> delete(@PathVariable String id, @RequestParam(name = "status") String status) {
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.changeStatusUser(id, status)));
     }
 
     @GetMapping(value = "/search/{id}")
-    public ResponseEntity<UserDTO> search(@PathVariable Integer id) {
-        try {
-            User user = this.userService.detail(id);
-            UserDTO userDTO = UserDTO.builder()
-                    .id(user.getId())
-                    .name(user.getName())
-                    .gender(user.getGender() != null ? user.getGender().toString() : "")
-                    .email(user.getAccount().getLogin())
-                    .birthday(user.getBirthday() != null ? user.getBirthday().toString() : user.getCreate_date().toString())
-                    .role(user.getAccount().getRole().toString())
-                    .build();
-            return new ResponseEntity<>(userDTO, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    public CompletableFuture<ResponseData> search(@PathVariable String id) {
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.detailUser(id)));
     }
 
     @GetMapping(value = "/new-user/{role}")
-    public ResponseEntity<Map<Integer, UserDAO>> getNewUserOrArts(@PathVariable String role) {
-        try {
-            return new ResponseEntity<>(this.userService.getNewUserOrArtis(role), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public CompletableFuture<ResponseData> getNewUserOrArts(@PathVariable String role) {
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getNewUserOrArtis(role)));
     }
 
     @GetMapping(value = "/get-all-artis")
-    public Page<ArtisDAO> getAllArtis(@RequestParam(name = "page", defaultValue = "0") Integer page) {
+    public CompletableFuture<ResponseData> getAllArtis(@RequestParam(name = "page", defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return this.userService.getAllArtis(pageable);
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getAllArtis(pageable)));
     }
 
     @GetMapping(value = "/get-all-artis/{status}")
-    public Page<ArtisDAO> getArtisByStatus(@PathVariable String status, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+    public CompletableFuture<ResponseData> getArtisByStatus(@PathVariable String status, @RequestParam(name = "page", defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return this.userService.getArtisByStatus(status, pageable);
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getArtisByStatus(status, pageable)));
     }
 
     @GetMapping(value = "/get-all-user")
-    public ResponseEntity<Page<UserDAO>> getAllUer(@RequestParam(name = "page", defaultValue = "0") Integer page) {
-        try {
-            Pageable pageable = PageRequest.of(page, 5);
-            return new ResponseEntity<>(this.userService.getAllUser(pageable), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.OK);
-        }
+    public CompletableFuture<ResponseData> getAllUer(@RequestParam(name = "page", defaultValue = "0") Integer page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getAllUser(pageable)));
     }
 
     @GetMapping(value = "/get-all-user/{status}")
-    public Page<UserDAO> getUserByStatus(@PathVariable String status, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+    public CompletableFuture<ResponseData> getUserByStatus(@PathVariable String status, @RequestParam(name = "page", defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return this.userService.getUserByStatus(status, pageable);
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getUserByStatus(status, pageable)));
     }
 
     @GetMapping(value = "/update-status")
-    public ResponseEntity<User> updateStatus(@RequestParam(name = "id") String id, @RequestParam(name = "account") String account, @RequestParam(name = "status") String status) {
-        try {
-            return new ResponseEntity<>(this.userService.updateStatusUser(id, account, status), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public CompletableFuture<ResponseData> updateStatus(@RequestParam(name = "id") String id, @RequestParam(name = "account") String account, @RequestParam(name = "status") String status) {
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.updateStatusUser(id, account, status)));
     }
 
     @GetMapping(value = "/get-artis-select")
-    public ResponseEntity<List<ArtisSelect>> getArtisSelect() {
-        try {
-            return new ResponseEntity<>(this.userService.getArtisForSelect(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public CompletableFuture<ResponseData> getArtisSelect() {
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getArtisForSelect()));
     }
 
     @GetMapping(value = "/get-email")
-    public ResponseEntity<List<String>> getEmailUser(){
-        try {
-            return new ResponseEntity<>(this.userService.getEmailUser(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public CompletableFuture<ResponseData> getEmailUser() {
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getEmailUser()));
     }
 
 }

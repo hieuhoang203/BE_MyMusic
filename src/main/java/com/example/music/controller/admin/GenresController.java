@@ -1,14 +1,11 @@
 package com.example.music.controller.admin;
 
 import com.example.music.dto.GenresDTO;
-import com.example.music.entity.Genres;
 import com.example.music.entity.comon.ResponseData;
-import com.example.music.service.impl.GenresService;
+import com.example.music.service.GenresService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Date;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -34,6 +30,11 @@ public class GenresController {
     @PostMapping(value = "/save")
     public CompletableFuture<ResponseData> saveGenre(@RequestBody GenresDTO genresDTO) {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.saveGenres(genresDTO)));
+    }
+
+    @PostMapping(value = "/verify")
+    public CompletableFuture<ResponseData> verifyGenres(@RequestBody GenresDTO genresDTO) {
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.verifyGenres(genresDTO)));
     }
 
     @PutMapping(value = "/update/{id}")

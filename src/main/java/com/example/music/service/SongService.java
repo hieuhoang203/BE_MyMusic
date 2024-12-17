@@ -1,8 +1,9 @@
-package com.example.music.service.impl;
+package com.example.music.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.music.dto.SongDTO;
+import com.example.music.dto.WorkDTO;
 import com.example.music.entity.Album;
 import com.example.music.entity.Genres;
 import com.example.music.entity.Own;
@@ -19,16 +20,17 @@ import com.example.music.repositories.SongGenresRepository;
 import com.example.music.repositories.SongRepository;
 import com.example.music.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -168,10 +170,17 @@ public class SongService {
             if (song == null) {
                 result = new Result(Message.SONG_DOES_NOT_EXIST.getCode(), false, Message.SONG_DOES_NOT_EXIST.getMessage());
                 finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
-                finalResult.put(Constant.RESPONSE_KEY.DATA, new Song());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new WorkDTO());
                 return finalResult;
             } else {
-                finalResult.put(Constant.RESPONSE_KEY.DATA, song);
+                WorkDTO songDTO = WorkDTO.builder()
+                        .name(song.getName())
+                        .album(song.getAlbum() != null ? song.getAlbum().getId() : null)
+                        .artis(song.getOwns())
+                        .genres(song.getSongGenres())
+                        .duration(song.getDuration())
+                        .build();
+                finalResult.put(Constant.RESPONSE_KEY.DATA, songDTO);
             }
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện tìm kiếm bài hát! {} " + e.getMessage());
@@ -202,6 +211,7 @@ public class SongService {
                     .duration(songDTO.getDuration())
                     .album(album)
                     .create_date(new Date(new java.util.Date().getTime()))
+                    .create_by("SUBLIME_SYSTEM")
                     .view(0)
                     .status(Constant.Status.Activate)
                     .build();
@@ -245,6 +255,8 @@ public class SongService {
             song.setAlbum(album);
             song.setDuration(songDTO.getDuration());
             song.setName(songDTO.getName());
+            song.setUpdate_date(new Date(new java.util.Date().getTime()));
+            song.setUpdate_by("SUBLIME_SYSTEM");
             saveSong(songDTO, songGenresSet, ownSet, song);
             finalResult.put(Constant.RESPONSE_KEY.DATA, song);
         } catch (Exception e) {
@@ -281,11 +293,30 @@ public class SongService {
                     .work(song)
                     .create_date(new Date(new java.util.Date().getTime()))
                     .create_by("SUBLIME_SYSTEM")
+                    .status(Constant.Status.Activate)
                     .build();
             ownSet.add(own);
         }
 
         this.ownRepository.saveAll(ownSet);
+    }
+
+    public Map<Object, Object> getSongByStatus(String status, Long pageable) {
+        Map<Object, Object> finalResult = new HashMap<>();
+        Result result = Result.OK();
+        try {
+            List<Song> songs = this.songRepository.getSong(status);
+            if (songs.isEmpty()) {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
+            } else {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, songs.stream().skip(pageable * 3).limit(3).toList());
+            }
+        } catch (Exception e) {
+            System.out.println("Xảy ra lỗi khi thực hiện lấy danh sách bài hát theo trạng thái! {} " + e.getMessage());
+            result = new Result(Message.SYSTEM_ERROR.getCode(), false, Message.SYSTEM_ERROR.getMessage());
+        }
+        finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+        return finalResult;
     }
 
 }

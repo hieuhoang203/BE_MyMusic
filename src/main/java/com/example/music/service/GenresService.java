@@ -1,4 +1,4 @@
-package com.example.music.service.impl;
+package com.example.music.service;
 
 import com.example.music.dao.GenresSelect;
 import com.example.music.dto.GenresDTO;

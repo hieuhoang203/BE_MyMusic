@@ -7,7 +7,7 @@ import com.example.music.controller.login.model.response.UserResponse;
 import com.example.music.repositories.AccountRepository;
 import com.example.music.repositories.UserRepository;
 import com.example.music.securityConfig.JwtConfig;
-import com.example.music.service.impl.AccountService;
+import com.example.music.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -17,14 +17,14 @@ public interface SongRepository extends JpaRepository<Song, String> {
     @Modifying
     @Transactional
     @Query(value = "update song set status = 'ShutDown' where id = ?1", nativeQuery = true)
-    void updateStatus(Long aLong);
+    void updateStatus(String aLong);
 
     @Transactional
     @Query(value = "select * from song where status = ?1 order by create_date desc", nativeQuery = true)
     List<Song> select(String status);
 
     @Query(value = "select * from song where status = ?1 order by create_date desc", nativeQuery = true)
-    Page<Song> getSong(String status, Pageable pageable);
+    List<Song> getSong(String status);
 
     @Query(value = "select * from song where status = 'Activate' or status = 'ShutDown' order by create_date desc", nativeQuery = true)
     Page<Song> getAllSong(Pageable pageable);

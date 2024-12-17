@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -17,7 +16,7 @@ public class AlbumDTO {
 
     private MultipartFile avatar;
 
-    private Integer artis;
+    private String artis;
 
     private String release_date;
 

@@ -1,4 +1,4 @@
-package com.example.music.service.impl;
+package com.example.music.service;
 
 import com.example.music.controller.login.model.request.NewAccountRequest;
 import com.example.music.entity.Account;

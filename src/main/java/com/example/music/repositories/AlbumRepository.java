@@ -35,6 +35,6 @@ public interface AlbumRepository extends JpaRepository<Album, String> {
 
     @Transactional
     @Query(value = "select id as 'value', name as 'label' from album where status = 'Activate' and artis = ?1", nativeQuery = true)
-    List<AlbumSelect> getAlbumForSelect(Integer artis);
+    List<AlbumSelect> getAlbumForSelect(String artis);
 
 }

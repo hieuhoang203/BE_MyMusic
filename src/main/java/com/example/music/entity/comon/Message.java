@@ -33,7 +33,19 @@ public enum Message {
     INVALID_GENDER("ERR029", "Invalid gender!"),
     INVALID_PERMISSION("ERR030", "Invalid permission!"),
     CANNOT_ADD_NEW_USER("ERR031", "Cannot add new user!"),
-    CANNOT_UPDATE_NEW_USER("ERR032", "Cannot update new user!");
+    CANNOT_UPDATE_NEW_USER("ERR032", "Cannot update new user!"),
+    SYSTEM_ERROR("ERR033", "System error occurred!"),
+    ERROR_WHILE_GETTING_USER_LIST("ERR034", "Error while getting user list!"),
+    ERROR_WHEN_GETTING_AUTHOR_DATA_TO_FILL_IN_SELECT_BOX("ERR035", "Error when getting author data to fill in select box!"),
+    ERROR_WHILE_GETTING_NEW_USER_LIST("ERR036", "Error while getting new user list!"),
+    ERROR_GETTING_AUTHOR_LIST("ERR037", "Error getting author list!"),
+    ERROR_RETRIEVING_USER_DETAILS("ERR038", "Error retrieving user details!"),
+    UNABLE_TO_UPDATE_USER_STATUS("ERR039", "Unable to update user status!"),
+    ERROR_WHEN_GETTING_ALBUM_DATA_FOR_SELECT_CELL("ERR040", "Error when getting album data for select cell!"),
+    ERROR_WHILE_ADDING_NEW_ALBUM("ERR041", "Error while adding new album!"),
+    ERROR_WHILE_UPDATING_ALBUM("ERR042", "Error while updating album!"),
+    ERROR_WHILE_CHANGING_ALBUM_STATUS("ERR043", "Error while changing album status!"),
+    ALBUM_DOES_NOT_EXIST("ERR044", "Album does not exist!");
 
     private String code;
 
