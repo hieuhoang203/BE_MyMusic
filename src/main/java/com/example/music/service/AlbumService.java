@@ -13,6 +13,7 @@ import com.example.music.repositories.AlbumRepository;
 import com.example.music.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -71,7 +72,8 @@ public class AlbumService {
         return finalResult;
     }
 
-    public Map<Object, Object> insertAlbum(AlbumDTO albumDTO) {
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    public Map<Object, Object> insertAlbum(AlbumDTO albumDTO) throws IOException, ParseException {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
@@ -89,12 +91,14 @@ public class AlbumService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện thêm mới album! {} " + e.getMessage());
             result = new Result(Message.ERROR_WHILE_ADDING_NEW_ALBUM.getCode(), false, Message.ERROR_WHILE_ADDING_NEW_ALBUM.getMessage());
+            throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
     }
 
-    public Map<Object, Object> updateAlbum(String  id, AlbumDTO albumDTO) {
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    public Map<Object, Object> updateAlbum(String  id, AlbumDTO albumDTO) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
@@ -120,6 +124,7 @@ public class AlbumService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện cập nhật album! {} " + e.getMessage());
             result = new Result(Message.ERROR_WHILE_UPDATING_ALBUM.getCode(), false, Message.ERROR_WHILE_UPDATING_ALBUM.getMessage());
+            throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;

@@ -25,32 +25,31 @@ import java.sql.Date;
 public class Account implements Serializable {
 
     @Id
-    @Column(name = "login", length = 40)
+    @Column(name = "login")
     private String login;
 
-    @Column(name = "pass", length = 40)
+    @Column(name = "pass")
     private String pass;
 
     @Column(name = "create_date")
     private Date create_date;
 
-    @Column(name = "create_by", length = 40)
+    @Column(name = "create_by")
     private String create_by;
 
     @Column(name = "update_date")
     private Date update_date;
 
-    @Column(name = "update_by", length = 40)
+    @Column(name = "update_by")
     private String update_by;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private String status;
 
     @OneToOne(mappedBy = "account")
     private User user;
 
-    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role")
     private String role;
 
 }

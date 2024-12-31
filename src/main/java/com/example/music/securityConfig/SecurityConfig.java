@@ -38,24 +38,18 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers(
-                        "/api/auth/**",
-                        "/album/all/**"
-                ).permitAll()
-                .and()
-                .authorizeHttpRequests()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/album/all/**").permitAll()
                 .requestMatchers(
                         "/genres/admin/**",
                         "/album/admin/**",
                         "/user/admin/**",
                         "/song/admin/**"
-                ).hasRole(String.valueOf(Constant.Role.ADMIN))
-                .and()
-                .authorizeHttpRequests()
+                ).hasRole(Constant.Role.ADMIN)
                 .requestMatchers(
                         "/song/artis/**",
                         "/album/artis/**"
-                ).hasRole(String.valueOf(Constant.Role.ARTIS))
+                ).hasRole(Constant.Role.ARTIS)
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

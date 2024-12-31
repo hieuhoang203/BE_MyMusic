@@ -50,7 +50,6 @@ public class Genres implements Serializable {
     @Column(name = "update_by")
     private String update_by;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private String status;
 

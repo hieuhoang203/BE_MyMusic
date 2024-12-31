@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -22,8 +23,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class GenresService {
-    
-    private GenresRepository genresRepository;
+
+    private final GenresRepository genresRepository;
 
     public Map<Object, Object> verifyGenres(GenresDTO genresDTO) {
         Map<Object, Object> finalResult = new HashMap<>();
@@ -52,6 +53,7 @@ public class GenresService {
         return finalResult;
     }
 
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     public Map<Object, Object> saveGenres(GenresDTO genresDTO) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
@@ -69,11 +71,13 @@ public class GenresService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện thêm mới thể loại nhạc! {} " + e.getMessage());
             result = new Result(Message.CANNOT_CREATE_NEW_GENRE.getCode(), false, Message.CANNOT_CREATE_NEW_GENRE.getMessage());
+            throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
     }
 
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     public Map<Object, Object> updateGenres(String id, GenresDTO genresDTO) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
@@ -95,6 +99,7 @@ public class GenresService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện cập nhật thể loại nhạc! {} " + e.getMessage());
             result = new Result(Message.CANNOT_UPDATE_GENRE.getCode(), false, Message.CANNOT_UPDATE_GENRE.getMessage());
+            throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;

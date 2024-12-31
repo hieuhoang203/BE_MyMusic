@@ -32,7 +32,7 @@ public class User implements Serializable{
     @Column(name = "id", length = 40)
     private String id;
 
-    @Column(name = "name", length = 40)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "birthday")
@@ -61,7 +61,6 @@ public class User implements Serializable{
     @Column(name = "update_by")
     private String update_by;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private String status;
 

@@ -36,20 +36,19 @@ public class SongGenres implements Serializable {
     @JoinColumn(name = "genres")
     private Genres genres;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private String status;
 
     @Column(name = "create_date")
     private Date create_date;
 
-    @Column(name = "create_by", length = 40)
+    @Column(name = "create_by")
     private String create_by;
 
     @Column(name = "update_date")
     private Date update_date;
 
-    @Column(name = "update_by", length = 40)
+    @Column(name = "update_by")
     private String update_by;
 
 }

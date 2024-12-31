@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -190,6 +191,7 @@ public class SongService {
         return finalResult;
     }
 
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     public Map<Object, Object> adminInsertSong(SongDTO songDTO) throws IOException {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
@@ -220,11 +222,13 @@ public class SongService {
         } catch (Exception e) {
             System.out.println("Xảy ra lỗi khi thực hiện tạo bài hát mới! {}: " + songDTO.toString());
             result = new Result(Message.CANNOT_CREATE_NEW_SONG.getCode(), false, Message.CANNOT_CREATE_NEW_SONG.getMessage());
+            throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
     }
 
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     public Map<Object, Object> adminUpdateSong(String id, SongDTO songDTO) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
@@ -262,6 +266,7 @@ public class SongService {
         } catch (Exception e) {
             System.out.println("Xảy ra lỗi khi thực hiệ cập nhật bài hát ! {} " + songDTO.toString());
             result = new Result(Message.CANNOT_UPDATE_SONG.getCode(), false, Message.CANNOT_UPDATE_SONG.getMessage());
+            throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;

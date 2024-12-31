@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -130,6 +131,7 @@ public class UserService {
         return finalResult;
     }
 
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     public Map<Object, Object> insert(UserDTO userDTO) throws IOException, ParseException {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
@@ -160,6 +162,7 @@ public class UserService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện thêm mới người dùng ! {} " + e.getMessage());
             result = new Result(Message.CANNOT_ADD_NEW_USER.getCode(), false, Message.CANNOT_ADD_NEW_USER.getMessage());
+            throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -190,6 +193,7 @@ public class UserService {
         return finalResult;
     }
 
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     public Map<Object, Object> update(String id, UserDTO userDTO) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
@@ -223,6 +227,7 @@ public class UserService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện cập nhật thông tin người dùng! {} " + e.getMessage());
             result = new Result(Message.SYSTEM_ERROR.getCode(), false, Message.SYSTEM_ERROR.getMessage());
+            throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;

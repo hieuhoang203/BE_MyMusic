@@ -36,7 +36,6 @@ public class Follow implements Serializable {
     @JoinColumn(name = "user")
     private User user;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private String status;
 

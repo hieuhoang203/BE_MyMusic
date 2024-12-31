@@ -37,7 +37,6 @@ public class Own implements Serializable {
     @JoinColumn(name = "work")
     private Song work;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private String status;
 

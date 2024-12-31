@@ -1,7 +1,5 @@
 package com.example.music.entity.comon;
 
-import lombok.Getter;
-
 public class Constant {
 
     public interface RESPONSE_KEY {

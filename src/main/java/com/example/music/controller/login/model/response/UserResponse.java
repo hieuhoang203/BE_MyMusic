@@ -7,7 +7,7 @@ import java.sql.Date;
 public interface UserResponse {
 
     @Value("#{target.id}")
-    Long getId();
+    String getId();
 
     @Value("#{target.name}")
     String getName();

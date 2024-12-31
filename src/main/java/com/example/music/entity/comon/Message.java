@@ -45,7 +45,9 @@ public enum Message {
     ERROR_WHILE_ADDING_NEW_ALBUM("ERR041", "Error while adding new album!"),
     ERROR_WHILE_UPDATING_ALBUM("ERR042", "Error while updating album!"),
     ERROR_WHILE_CHANGING_ALBUM_STATUS("ERR043", "Error while changing album status!"),
-    ALBUM_DOES_NOT_EXIST("ERR044", "Album does not exist!");
+    ALBUM_DOES_NOT_EXIST("ERR044", "Album does not exist!"),
+    UNABLE_TO_CREATE_ACCOUNT("ERR045", "Unable to create account!"),
+    CANNOT_LOG_IN("ERR046", "Cannot log in!");
 
     private String code;
 
