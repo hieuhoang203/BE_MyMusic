@@ -1,6 +1,6 @@
 package com.example.music.security;
 
-import com.example.music.entity.User;
+import com.example.music.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

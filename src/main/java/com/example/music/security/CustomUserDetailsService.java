@@ -1,7 +1,7 @@
 package com.example.music.security;
 
-import com.example.music.entity.User;
-import com.example.music.repositories.UserRepository;
+import com.example.music.user.User;
+import com.example.music.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
