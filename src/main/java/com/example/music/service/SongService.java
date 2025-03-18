@@ -2,8 +2,8 @@ package com.example.music.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.example.music.dto.SongDTO;
-import com.example.music.dto.WorkDTO;
+import com.example.music.dto.SongRequest;
+import com.example.music.dto.WorkRequest;
 import com.example.music.entity.Album;
 import com.example.music.entity.Genres;
 import com.example.music.entity.Own;
@@ -64,7 +64,7 @@ public class SongService {
             "resource_type", "video"
     );
 
-    public Map<Object, Object> verifySong(Byte type ,SongDTO songDTO) {
+    public Map<Object, Object> verifySong(Byte type , SongRequest songDTO) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         Boolean check = true;
@@ -171,10 +171,10 @@ public class SongService {
             if (song == null) {
                 result = new Result(Message.SONG_DOES_NOT_EXIST.getCode(), false, Message.SONG_DOES_NOT_EXIST.getMessage());
                 finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
-                finalResult.put(Constant.RESPONSE_KEY.DATA, new WorkDTO());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new WorkRequest());
                 return finalResult;
             } else {
-                WorkDTO songDTO = WorkDTO.builder()
+                WorkRequest songDTO = WorkRequest.builder()
                         .name(song.getName())
                         .album(song.getAlbum() != null ? song.getAlbum().getId() : null)
                         .artis(song.getOwns())
@@ -192,7 +192,7 @@ public class SongService {
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> adminInsertSong(SongDTO songDTO) throws IOException {
+    public Map<Object, Object> adminInsertSong(SongRequest songDTO) throws IOException {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
 
@@ -229,7 +229,7 @@ public class SongService {
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> adminUpdateSong(String id, SongDTO songDTO) throws Exception {
+    public Map<Object, Object> adminUpdateSong(String id, SongRequest songDTO) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         Set<SongGenres> songGenresSet = new HashSet<>();
@@ -272,7 +272,7 @@ public class SongService {
         return finalResult;
     }
 
-    private void saveSong(SongDTO songDTO, Set<SongGenres> songGenresSet, Set<Own> ownSet, Song song) {
+    private void saveSong(SongRequest songDTO, Set<SongGenres> songGenresSet, Set<Own> ownSet, Song song) {
         this.songRepository.save(song);
 
         for (String genresId : songDTO.getGenres()) {

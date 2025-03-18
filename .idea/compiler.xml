@@ -8,7 +8,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="music" />
-        <module name="BE_MyMusic" />
       </profile>
     </annotationProcessing>
   </component>

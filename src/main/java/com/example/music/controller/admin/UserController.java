@@ -1,6 +1,6 @@
 package com.example.music.controller.admin;
 
-import com.example.music.dto.UserDTO;
+import com.example.music.dto.UserRequest;
 import com.example.music.entity.comon.ResponseData;
 import com.example.music.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +29,17 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/verify")
-    public CompletableFuture<ResponseData> verifyUser(@RequestParam(name = "type") Byte type, @ModelAttribute UserDTO userDTO) {
+    public CompletableFuture<ResponseData> verifyUser(@RequestParam(name = "type") Byte type, @ModelAttribute UserRequest userDTO) {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.verifyUser(type, userDTO)));
     }
 
     @PostMapping(value = "/save")
-    public CompletableFuture<ResponseData> insert(@ModelAttribute UserDTO userDTO) throws IOException, ParseException {
+    public CompletableFuture<ResponseData> insert(@ModelAttribute UserRequest userDTO) throws IOException, ParseException {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.insert(userDTO)));
     }
 
     @PutMapping(value = "/update/{id}")
-    public CompletableFuture<ResponseData> update(@PathVariable String id, @ModelAttribute UserDTO userDTO) throws Exception {
+    public CompletableFuture<ResponseData> update(@PathVariable String id, @ModelAttribute UserRequest userDTO) throws Exception {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.update(id, userDTO)));
     }
 
@@ -58,17 +58,17 @@ public class UserController {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getNewUserOrArtis(role)));
     }
 
-    @GetMapping(value = "/get-all-artis")
-    public CompletableFuture<ResponseData> getAllArtis(@RequestParam(name = "page", defaultValue = "0") Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getAllArtis(pageable)));
-    }
-
-    @GetMapping(value = "/get-all-artis/{status}")
-    public CompletableFuture<ResponseData> getArtisByStatus(@PathVariable String status, @RequestParam(name = "page", defaultValue = "0") Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getArtisByStatus(status, pageable)));
-    }
+//    @GetMapping(value = "/get-all-artis")
+//    public CompletableFuture<ResponseData> getAllArtis(@RequestParam(name = "page", defaultValue = "0") Integer page) {
+//        Pageable pageable = PageRequest.of(page, 5);
+//        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getAllArtis(pageable)));
+//    }
+//
+//    @GetMapping(value = "/get-all-artis/{status}")
+//    public CompletableFuture<ResponseData> getArtisByStatus(@PathVariable String status, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+//        Pageable pageable = PageRequest.of(page, 5);
+//        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getArtisByStatus(status, pageable)));
+//    }
 
     @GetMapping(value = "/get-all-user")
     public CompletableFuture<ResponseData> getAllUer(@RequestParam(name = "page", defaultValue = "0") Integer page) {
@@ -87,10 +87,10 @@ public class UserController {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.updateStatusUser(id, account, status)));
     }
 
-    @GetMapping(value = "/get-artis-select")
-    public CompletableFuture<ResponseData> getArtisSelect() {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getArtisForSelect()));
-    }
+//    @GetMapping(value = "/get-artis-select")
+//    public CompletableFuture<ResponseData> getArtisSelect() {
+//        return CompletableFuture.completedFuture(ResponseData.createResponse(this.userService.getArtisForSelect()));
+//    }
 
     @GetMapping(value = "/get-email")
     public CompletableFuture<ResponseData> getEmailUser() {

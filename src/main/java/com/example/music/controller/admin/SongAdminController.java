@@ -1,6 +1,6 @@
 package com.example.music.controller.admin;
 
-import com.example.music.dto.SongDTO;
+import com.example.music.dto.SongRequest;
 import com.example.music.entity.comon.ResponseData;
 import com.example.music.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +33,12 @@ public class SongAdminController {
     }
 
     @PostMapping(value = "/save")
-    public CompletableFuture<ResponseData> insert(@ModelAttribute SongDTO songDTO) throws IOException {
+    public CompletableFuture<ResponseData> insert(@ModelAttribute SongRequest songDTO) throws IOException {
         return CompletableFuture.completedFuture(ResponseData.createResponse(songService.adminInsertSong(songDTO)));
     }
 
     @PutMapping(value = "/update/{id}")
-    public CompletableFuture<ResponseData> update(@PathVariable String id, @ModelAttribute SongDTO songDTO) throws Exception {
+    public CompletableFuture<ResponseData> update(@PathVariable String id, @ModelAttribute SongRequest songDTO) throws Exception {
         return CompletableFuture.completedFuture(ResponseData.createResponse(songService.adminUpdateSong(id, songDTO)));
     }
 

@@ -1,80 +1,79 @@
 package com.example.music.repositories;
 
 import com.example.music.controller.login.model.response.UserResponse;
-import com.example.music.dao.ArtisDAO;
-import com.example.music.dao.ArtisSelect;
-import com.example.music.dao.UserDAO;
+import com.example.music.data.DetailAccount;
 import com.example.music.entity.User;
-import jakarta.transaction.Transactional;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
-    @Transactional
-    @Query(value = "select * from user where status = ?1 order by create_date desc", nativeQuery = true)
-    List<User> select(String status);
+    @Query(value = "select * from tbl_user where status = :status order by create_date desc", nativeQuery = true)
+    List<User> selectUser(@Param("status") String status);
 
-    @Query(value = "select * from user where status = ?1 order by create_date desc", nativeQuery = true)
-    Page<User> getUser(String status, Pageable pageable);
+    @Query(value = "select * from tbl_user where status = :status order by create_date desc", nativeQuery = true)
+    Page<User> getUser(@Param("status") String status, Pageable pageable);
 
-    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.account as 'email', user.gender as 'gender', user.birthday as 'birthday', " +
-            "user.create_date as 'dateCreate', user.status as 'status' from user join account a on a.login = user.account " +
-            "where a.role = ?1 and user.status = 'Activate' order by user.create_date desc limit 3", nativeQuery = true)
-    List<UserDAO> getNewUserOrArtis(String role);
+    @Query(value = "select tbl_user.id as 'id', tbl_user.name as 'name', tbl_user.avatar as 'avatar', tbl_user.account as 'email', tbl_user.gender as 'gender', tbl_user.birthday as 'birthday', " +
+            "tbl_user.create_date as 'dateCreate', tbl_user.status as 'status' from tbl_user join tbl_account a on a.login = tbl_user.account " +
+            "where a.role = :role and tbl_user.status = 'Activate' order by tbl_user.create_date desc limit 3", nativeQuery = true)
+    List<UserResponse> getNewUserOrArtis(@Param("role") String role);
 
-    @Transactional
-    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.account as 'email', user.gender as 'gender', user.birthday as 'birthday', user.create_date as 'dateCreate', user.status as 'status' from user join account a on a.login = user.account where a.role = 'USER' or a.role = 'ADMIN' order by user.create_date desc", nativeQuery = true)
-    Page<UserDAO> getAllUser(Pageable pageable);
+    @org.springframework.transaction.annotation.Transactional
+    @Query(value = "select tbl_user.id as 'id', tbl_user.name as 'name', tbl_user.avatar as 'avatar', tbl_user.account as 'email', tbl_user.gender as 'gender', tbl_user.birthday as 'birthday', tbl_user.create_date as 'dateCreate', tbl_user.status as 'status' from tbl_user join tbl_account a on a.login = tbl_user.account where a.role = 'USER' or a.role = 'ADMIN' order by tbl_user.create_date desc", nativeQuery = true)
+    Page<UserResponse> getAllUser(Pageable pageable);
 
-    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.gender as 'gender', user.account as 'email', user.birthday as 'birthday', user.create_date as 'dateCreate', user.status as 'status' from user join account a on a.login = user.account where a.role = 'USER' or a.role = 'ADMIN' and user.status = ?1 order by user.create_date desc", nativeQuery = true)
-    Page<UserDAO> getUserByStatus(String status, Pageable pageable);
+    @Query(value = "select tbl_user.id as 'id', tbl_user.name as 'name', tbl_user.avatar as 'avatar', tbl_user.gender as 'gender', tbl_user.account as 'email', tbl_user.birthday as 'birthday', tbl_user.create_date as 'dateCreate', tbl_user.status as 'status' from tbl_user join tbl_account a on a.login = tbl_user.account where a.role = 'USER' or a.role = 'ADMIN' and tbl_user.status = :status order by tbl_user.create_date desc", nativeQuery = true)
+    Page<UserResponse> getUserByStatus(@Param("status") String status, Pageable pageable);
 
-    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.gender as 'gender'\n" +
-            ", user.birthday as 'birthday', COALESCE(count(o.work), 0) as 'songs', COALESCE(count(f.user), 0) as 'follows', user.status as 'status' from user\n" +
-            "left join follow f on user.id = f.idol\n" +
-            "left join own o on user.id = o.author\n" +
-            "join account a on a.login = user.account\n" +
-            "where a.role = 'ARTIS'\n" +
-            "group by user.id order by user.create_date desc ", nativeQuery = true)
-    Page<ArtisDAO> getAllArtis(Pageable pageable);
+//    @Query(value = "select tbl_user.id as 'id', tbl_user.name as 'name', tbl_user.avatar as 'avatar', tbl_user.gender as 'gender'\n" +
+//            ", tbl_user.birthday as 'birthday', COALESCE(count(o.work), 0) as 'songs', COALESCE(count(f.tbl_user), 0) as 'follows', tbl_user.status as 'status' from tbl_user\n" +
+//            "left join follow f on tbl_user.id = f.idol\n" +
+//            "left join own o on tbl_user.id = o.author\n" +
+//            "join tbl_account a on a.login = tbl_user.account\n" +
+//            "where a.role = 'ARTIS'\n" +
+//            "group by tbl_user.id order by tbl_user.create_date desc ", nativeQuery = true)
+//    Page<ArtisResponse> getAllArtis(Pageable pageable);
+//
+//    @Query(value = "select tbl_user.id as 'id', tbl_user.name as 'name', tbl_user.avatar as 'avatar', tbl_user.gender as 'gender'\n" +
+//            ", tbl_user.birthday as 'birthday', COALESCE(count(o.work), 0) as 'songs', COALESCE(count(f.tbl_user), 0) as 'follows', tbl_user.status as 'status' from tbl_user\n" +
+//            "left join follow f on tbl_user.id = f.idol\n" +
+//            "left join own o on tbl_user.id = o.author\n" +
+//            "join tbl_account a on a.login = tbl_user.account\n" +
+//            "where a.role = 'ARTIS' and tbl_user.status = :status\n" +
+//            "group by tbl_user.id order by tbl_user.create_date desc ", nativeQuery = true)
+//    Page<ArtisResponse> getArtisByStatus(@Param("status") String status, Pageable pageable);
 
-    @Query(value = "select user.id as 'id', user.name as 'name', user.avatar as 'avatar', user.gender as 'gender'\n" +
-            ", user.birthday as 'birthday', COALESCE(count(o.work), 0) as 'songs', COALESCE(count(f.user), 0) as 'follows', user.status as 'status' from user\n" +
-            "left join follow f on user.id = f.idol\n" +
-            "left join own o on user.id = o.author\n" +
-            "join account a on a.login = user.account\n" +
-            "where a.role = 'ARTIS' and user.status = ?1\n" +
-            "group by user.id order by user.create_date desc ", nativeQuery = true)
-    Page<ArtisDAO> getArtisByStatus(String status, Pageable pageable);
-
-    @Transactional
     @Modifying
-    @Query(value = "update user set status = ?2 where id = ?1", nativeQuery = true)
-    void updateStatusUser(String id, String status);
+    @Query(value = "update tbl_user set status = :status where id = :id", nativeQuery = true)
+    void updateStatusUser(@Param("id") String id, @Param("status") String status);
 
-    @Transactional
-    @Query(value = "select user.id as 'value', user.name as 'label' from user join account a on a.login = user.account\n" +
-            "where a.role = 'ARTIS' and user.status = 'Activate'", nativeQuery = true)
-    List<ArtisSelect> getArtisForSelect();
+//    @org.springframework.transaction.annotation.Transactional
+//    @Query(value = "select tbl_user.id as 'value', tbl_user.name as 'label' from tbl_user\n" +
+//            "where a.role = 'ARTIS' and tbl_user.status = 'Activate'", nativeQuery = true)
+//    List<ComboboxValue> getArtisForSelect();
 
-    @Transactional
-    @Query(value = "select user.account from user", nativeQuery = true)
+    @Query(value = "select tbl_user.account from tbl_user", nativeQuery = true)
     List<String> getEmailUser();
 
     @Transactional
-    @Query(value = "select u.id, u.name, u.gender, u.birthday, u.avatar, a.role from user u left join account a on a.login = u.account\n" +
-            "where u.account = ?1", nativeQuery = true)
-    UserResponse getUserResponse(String login);
+    @Query(value = "select u.id, u.name, u.gender, u.birthday, u.avatar, u.role from tbl_user u\n" +
+            "where u.login = :login", nativeQuery = true)
+    DetailAccount getUserResponse(@Param("login") String login);
 
-    @Query(value = "select account from user", nativeQuery = true)
-    List<String> getAllEmail();
+    @Query(value = "select 1 from tbl_user WHERE account = :email LIMIT 1 ", nativeQuery = true)
+    Integer getAllEmail(@Param("email") String email);
+
+    @Query(value = "select * from tbl_user where login = :email and status = 'Activate'", nativeQuery = true)
+    User getUserByEmail(@Param("email") String email);
 
 }

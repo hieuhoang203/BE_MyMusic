@@ -2,6 +2,7 @@ package com.example.music.repositories;
 
 import com.example.music.dao.GenresSelect;
 import com.example.music.entity.Genres;
+import io.lettuce.core.dynamic.annotation.Param;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,5 +35,8 @@ public interface GenresRepository extends JpaRepository<Genres, String> {
 
     @Query(value = "select id as 'value', name as 'label' from genres where status = 'Activate'", nativeQuery = true)
     List<GenresSelect> getGenresForSelect();
+
+    @Query(value = "SELECT 1 FROM tbl_genres WHERE LOWER(:column) = LOWER(:value) LIMIT 1", nativeQuery = true)
+    Integer checkCodeOrNameExists(@Param("column") String column, @Param("value") String value);
 
 }

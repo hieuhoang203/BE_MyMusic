@@ -1,32 +1,42 @@
 server:
-  port: 8903
+  port: 8920
+redis:
+  redisson:
+    host: redis://127.0.0.1:6379
+    connection-pool-size: 10
+    connection-minimum-idle-size: 5
+    connect-timeout: 30000
 spring:
-  session:
-    store-type: none
+  application:
+    name: MusicApp
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 08092003
-    url: jdbc:mysql://localhost:3306/Sublime
-  sql:
-    init:
-      encoding: UTF-8
+    password: 892003
+    url: jdbc:mysql://localhost:3306/sublime
+    #    username: ufiscphaens3s44k
+    #    password: vI8A8xguC19ru7gXvXyx
+    #    url: jdbc:mysql://bj7yxduhhhhly6jh3sek-mysql.services.clever-cloud.com:3306/bj7yxduhhhhly6jh3sek
+    sql:
+      init:
+        encoding: UTF-8
   jpa:
     hibernate:
       ddl-auto: none
     properties:
       hibernate:
         globally_quoted_identifiers: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
-  servlet:
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB
+    servlet:
+      multipart:
+        max-file-size: 20MB
+        max-request-size: 20MB
   mail:
     host: smtp.gmail.com
     port: 587
     username: hieuhv203@gmail.com
-    password: yqdw armu rqlc aoyr
+    password: bjme xmga anot
     properties:
       mail:
         transport:
@@ -37,6 +47,6 @@ spring:
           starttls:
             enable: true
             required: true
-  #spring.datasource.url=jdbc:mysql://uutnyjb26ldpzah8:CdeJw8HmW9cK3MUV6Z3P@bllwvg06ean0ccxexjdp-mysql.services.clever-cloud.com:3306/bllwvg06ean0ccxexjdp
-  #spring.datasource.username=uutnyjb26ldpzah8
-  #spring.datasource.password=CdeJw8HmW9cK3MUV6Z3P
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000

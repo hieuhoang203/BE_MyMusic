@@ -1,22 +1,24 @@
 package com.example.music.service;
 
-import com.example.music.controller.login.model.request.LoginRequest;
-import com.example.music.controller.login.model.request.NewAccountRequest;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.api.ApiResponse;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.music.controller.login.model.response.AccountResponse;
-import com.example.music.controller.login.model.response.UserResponse;
-import com.example.music.entity.Account;
+import com.example.music.data.DetailAccount;
+import com.example.music.dto.AccountRequest;
+import com.example.music.dto.LoginRequest;
 import com.example.music.entity.User;
 import com.example.music.entity.comon.Constant;
 import com.example.music.entity.comon.Message;
 import com.example.music.entity.comon.Result;
-import com.example.music.repositories.AccountRepository;
 import com.example.music.repositories.UserRepository;
-import com.example.music.securityConfig.JwtConfig;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.music.security.JwtService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,46 +29,59 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AccountService {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtConfig jwtConfig;
+    private final JwtService jwtService;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final Cloudinary cloudinary;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> createAccountUser(NewAccountRequest newAccountRequest) {
+    public Map<Object, Object> verifyAccount(AccountRequest request) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
+        if (request.getLogin() == null || request.getLogin().isEmpty()) {
+            result = new Result(Message.INVALID_EMAIL.getCode(), false, Message.INVALID_EMAIL.getMessage());
+        }
+        if (request.getPass() == null || request.getPass().isEmpty() || request.getPass().length() < 6) {
+            result = new Result(Message.INVALID_PASSWORD.getCode(), false, Message.INVALID_PASSWORD.getMessage());
+        }
+        User user = userRepository.getUserByEmail(request.getLogin());
+        if (user != null) {
+            result = new Result(Message.ACCOUNT_ALREADY_EXISTS.getCode(), false, Message.ACCOUNT_ALREADY_EXISTS.getMessage());
+        }
+        finalResult.put("result", result);
+        return finalResult;
+    }
+
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
+    public Map<Object, Object> createAccountUser(AccountRequest request) throws Exception {
+        Map<Object, Object> finalResult = new HashMap<>();
+        Result result = Result.OK();
+
         try {
-            Account account = Account.builder()
-                    .login(newAccountRequest.getLogin())
-                    .pass(passwordEncoder.encode(newAccountRequest.getPass()))
-                    .role(Constant.Role.USER)
-                    .create_date(new Date(new java.util.Date().getTime()))
-                    .status(Constant.Status.Activate)
-                    .build();
-            this.accountRepository.save(account);
+            Date create = new Date(System.currentTimeMillis());
+
+            ApiResponse apiResponse = cloudinary.api().resourceByAssetID("6089f07ca3500cc8c9362a3edb3be8d7", ObjectUtils.emptyMap());
 
             User user = User.builder()
                     .id(UUID.randomUUID().toString())
-                    .name(newAccountRequest.getName())
-                    .create_date(new Date(new java.util.Date().getTime()))
-                    .account(account)
+                    .name(request.getName())
+                    .avatar(apiResponse.get("url").toString())
+                    .create_date(create)
+                    .login(request.getLogin())
+                    .password(passwordEncoder.encode(request.getPass()))
+                    .role(Constant.Role.USER)
+                    .create_by(Constant.Create.NTH)
                     .status(Constant.Status.Activate)
                     .build();
             this.userRepository.save(user);
-            finalResult.put(Constant.RESPONSE_KEY.DATA, jwtConfig.generateToken(newAccountRequest.getLogin()));
+            finalResult.put(Constant.RESPONSE_KEY.DATA, jwtService.generateToken(user));
         } catch (Exception e) {
             System.out.println("Xảy ra lỗi khi tạo mới người dùng {} " + e.getMessage());
             result = new Result(Message.UNABLE_TO_CREATE_ACCOUNT.getCode(), false, Message.UNABLE_TO_CREATE_ACCOUNT.getMessage());
@@ -77,24 +92,20 @@ public class AccountService {
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> createAccountArtis(NewAccountRequest newAccountRequest) {
+    public Map<Object, Object> createAccountArtis(AccountRequest request) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
-            Account account = Account.builder()
-                    .login(newAccountRequest.getLogin())
-                    .pass(passwordEncoder.encode(newAccountRequest.getPass()))
-                    .role(Constant.Role.ARTIS)
-                    .create_date(new Date(new java.util.Date().getTime()))
-                    .status(Constant.Status.Activate)
-                    .build();
-            this.accountRepository.save(account);
+            ApiResponse apiResponse = cloudinary.api().resourceByAssetID("6089f07ca3500cc8c9362a3edb3be8d7", ObjectUtils.emptyMap());
 
             User user = User.builder()
                     .id(UUID.randomUUID().toString())
-                    .name(newAccountRequest.getName())
+                    .name(request.getName())
+                    .avatar(apiResponse.get("url").toString())
                     .create_date(new Date(new java.util.Date().getTime()))
-                    .account(account)
+                    .login(request.getLogin())
+                    .password(passwordEncoder.encode(request.getPass()))
+                    .role(Constant.Role.ARTIS)
                     .status(Constant.Status.Activate)
                     .build();
             this.userRepository.save(user);
@@ -113,10 +124,16 @@ public class AccountService {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPass()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String token = jwtConfig.generateToken(authentication.getName());
-            AccountResponse response = new AccountResponse(token, login.getLogin());
-            finalResult.put(Constant.RESPONSE_KEY.DATA, response);
+            if (authentication.isAuthenticated()) {
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                User user = userRepository.getUserByEmail(login.getLogin());
+                if (user == null) {
+                    throw new UsernameNotFoundException("User not found");
+                }
+                String token = jwtService.generateToken(user);
+                AccountResponse response = new AccountResponse(token, login.getLogin());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, response);
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             result = new Result(Message.CANNOT_LOG_IN.getCode(), false, Message.CANNOT_LOG_IN.getMessage());
@@ -129,11 +146,11 @@ public class AccountService {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
-            UserResponse userResponse = userRepository.getUserResponse(login);
+            DetailAccount userResponse = userRepository.getUserResponse(login);
             finalResult.put(Constant.RESPONSE_KEY.DATA, userResponse);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            result = new Result(Message.NOT_EXISTS.getCode(), false, Message.NOT_EXISTS.getMessage());
+            result = new Result(Message.ACCOUNT_NOT_EXISTS.getCode(), false, Message.ACCOUNT_NOT_EXISTS.getMessage());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;

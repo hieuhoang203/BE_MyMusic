@@ -3,13 +3,9 @@ package com.example.music.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,10 +37,11 @@ public class User implements Serializable{
     @Column(name = "gender")
     private Boolean gender;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account", referencedColumnName = "login")
-    @JsonIgnore
-    private Account account;
+    @Column(name = "login")
+    private String login;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "avatar")
     private String avatar;
@@ -63,6 +60,9 @@ public class User implements Serializable{
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "role")
+    private String role;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnore

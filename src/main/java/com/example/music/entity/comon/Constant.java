@@ -19,4 +19,9 @@ public class Constant {
         String Wait = "Wait";
     }
 
+    public interface Create {
+        String HVH = "Hoàng Văn Hiếu";
+        String NTH = "Nguyễn Thanh Hòa";
+    }
+
 }

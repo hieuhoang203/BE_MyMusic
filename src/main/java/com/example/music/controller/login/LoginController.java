@@ -1,15 +1,13 @@
 package com.example.music.controller.login;
 
-import com.example.music.controller.login.model.request.LoginRequest;
-import com.example.music.controller.login.model.request.NewAccountRequest;
-import com.example.music.controller.login.model.response.UserResponse;
+import com.example.music.dto.AccountRequest;
+import com.example.music.dto.LoginRequest;
+
 import com.example.music.entity.comon.ResponseData;
-import com.example.music.repositories.AccountRepository;
 import com.example.music.repositories.UserRepository;
 import com.example.music.service.AccountService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,24 +21,16 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequestMapping(value = "/api/auth")
 @CrossOrigin("*")
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class LoginController {
 
-    @Autowired
-    private AccountRepository repository;
+    private final AccountService service;
 
-    @Autowired
-    private AccountService service;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @PostMapping(value = "/register")
-    public CompletableFuture<ResponseData> register(@RequestBody NewAccountRequest accountRequest) {
-        if (!this.repository.existsAccountByLogin(accountRequest.getLogin())) {
-            return CompletableFuture.completedFuture(ResponseData.createResponse(this.service.createAccountUser(accountRequest)));
-        } else {
-            return null;
-        }
+    public CompletableFuture<ResponseData> register(@RequestBody AccountRequest accountRequest) throws Exception {
+        return CompletableFuture.completedFuture(ResponseData.createResponse(this.service.createAccountUser(accountRequest)));
     }
 
     @PostMapping(value = "/login")

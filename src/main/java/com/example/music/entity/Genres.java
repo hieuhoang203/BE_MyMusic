@@ -22,7 +22,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "genres")
+@Table(name = "tbl_genres")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

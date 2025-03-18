@@ -1,6 +1,6 @@
 package com.example.music.controller.admin;
 
-import com.example.music.dto.GenresDTO;
+import com.example.music.dto.GenresRequest;
 import com.example.music.entity.comon.ResponseData;
 import com.example.music.service.GenresService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
-@RequestMapping(value = "/genres/admin")
+@RequestMapping(value = "/genres")
 @CrossOrigin("*")
 public class GenresController {
 
@@ -28,17 +28,17 @@ public class GenresController {
     private GenresService genresService;
 
     @PostMapping(value = "/save")
-    public CompletableFuture<ResponseData> saveGenre(@RequestBody GenresDTO genresDTO) {
+    public CompletableFuture<ResponseData> saveGenre(@RequestBody GenresRequest genresDTO) {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.saveGenres(genresDTO)));
     }
 
     @PostMapping(value = "/verify")
-    public CompletableFuture<ResponseData> verifyGenres(@RequestBody GenresDTO genresDTO) {
+    public CompletableFuture<ResponseData> verifyGenres(@RequestBody GenresRequest genresDTO) {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.verifyGenres(genresDTO)));
     }
 
     @PutMapping(value = "/update/{id}")
-    public CompletableFuture<ResponseData> updateGenre(@PathVariable String id, @RequestBody GenresDTO genresDTO) {
+    public CompletableFuture<ResponseData> updateGenre(@PathVariable String id, @RequestBody GenresRequest genresDTO) {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.updateGenres(id, genresDTO)));
     }
 
@@ -58,9 +58,9 @@ public class GenresController {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.getAll(pageable)));
     }
 
-    @GetMapping(value = "/get-genres-select")
-    public CompletableFuture<ResponseData> getGenresForSelect() {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.getGenresForSelect()));
-    }
+//    @GetMapping(value = "/get-genres-select")
+//    public CompletableFuture<ResponseData> getGenresForSelect() {
+//        return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.getGenresForSelect()));
+//    }
 
 }

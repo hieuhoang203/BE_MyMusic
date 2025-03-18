@@ -1,7 +1,7 @@
 package com.example.music.service;
 
 import com.example.music.dao.GenresSelect;
-import com.example.music.dto.GenresDTO;
+import com.example.music.dto.GenresRequest;
 import com.example.music.entity.Genres;
 import com.example.music.entity.comon.Constant;
 import com.example.music.entity.comon.Message;
@@ -26,18 +26,18 @@ public class GenresService {
 
     private final GenresRepository genresRepository;
 
-    public Map<Object, Object> verifyGenres(GenresDTO genresDTO) {
+    public Map<Object, Object> verifyGenres(GenresRequest genresDTO) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         Boolean check = true;
         try {
-            if (genresDTO.getCode().isEmpty() || genresRepository.getAllCode().contains(genresDTO.getCode())) {
+            if (genresDTO.getCode().isEmpty() || genresRepository.checkCodeOrNameExists("code", genresDTO.getCode()) == 1) {
                 result = new Result(Message.INVALID_MUSIC_GENRE_CODE.getCode(), false, Message.INVALID_MUSIC_GENRE_CODE.getMessage());
                 check = false;
             }
 
-            if (genresDTO.getName().isEmpty() || genresRepository.getAllName().contains(genresDTO.getName())) {
-                result = new Result(Message.INVALID_MUSIC_GENRE_NAME.getCode(), false, Message.INVALID_MUSIC_GENRE_NAME.getMessage());
+            if (genresDTO.getName().isEmpty() || genresRepository.checkCodeOrNameExists("name", genresDTO.getName()) == 1) {
+                result = new Result(Message.INVALID_MUSIC_GENRES_NAME.getCode(), false, Message.INVALID_MUSIC_GENRES_NAME.getMessage());
                 check = false;
             }
             if (check) {
@@ -53,8 +53,7 @@ public class GenresService {
         return finalResult;
     }
 
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> saveGenres(GenresDTO genresDTO) {
+    public Map<Object, Object> saveGenres(GenresRequest genresDTO) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
@@ -69,22 +68,21 @@ public class GenresService {
             this.genresRepository.save(genres);
             finalResult.put(Constant.RESPONSE_KEY.DATA, genres);
         } catch (Exception e) {
-            System.out.println("Lỗi khi thực hiện thêm mới thể loại nhạc! {} " + e.getMessage());
-            result = new Result(Message.CANNOT_CREATE_NEW_GENRE.getCode(), false, Message.CANNOT_CREATE_NEW_GENRE.getMessage());
-            throw e;
+            e.printStackTrace();
+            result = new Result(Message.CANNOT_CREATE_NEW_GENRES.getCode(), false, Message.CANNOT_CREATE_NEW_GENRES.getMessage());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> updateGenres(String id, GenresDTO genresDTO) {
+    public Map<Object, Object> updateGenres(String id, GenresRequest genresDTO) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
             Genres genres = this.genresRepository.findById(id).orElse(null);
             if (genres == null) {
-                result = new Result(Message.GENRE_DOES_NOT_EXIST.getCode(), false, Message.GENRE_DOES_NOT_EXIST.getMessage());
+                result = new Result(Message.GENRES_DOES_NOT_EXIST.getCode(), false, Message.GENRES_DOES_NOT_EXIST.getMessage());
                 finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new Genres());
                 return finalResult;
@@ -98,7 +96,7 @@ public class GenresService {
             }
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện cập nhật thể loại nhạc! {} " + e.getMessage());
-            result = new Result(Message.CANNOT_UPDATE_GENRE.getCode(), false, Message.CANNOT_UPDATE_GENRE.getMessage());
+            result = new Result(Message.CANNOT_UPDATE_GENRES.getCode(), false, Message.CANNOT_UPDATE_GENRES.getMessage());
             throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
@@ -111,7 +109,7 @@ public class GenresService {
         try {
             Genres genres = this.genresRepository.findById(id).orElse(null);
             if (genres == null) {
-                result = new Result(Message.GENRE_DOES_NOT_EXIST.getCode(), false, Message.GENRE_DOES_NOT_EXIST.getMessage());
+                result = new Result(Message.GENRES_DOES_NOT_EXIST.getCode(), false, Message.GENRES_DOES_NOT_EXIST.getMessage());
                 finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new Genres());
                 return finalResult;
@@ -152,7 +150,7 @@ public class GenresService {
         try {
             Genres genres = genresRepository.findById(id).orElse(null);
             if (genres == null) {
-                result = new Result(Message.GENRE_DOES_NOT_EXIST.getCode(), false, Message.GENRE_DOES_NOT_EXIST.getMessage());
+                result = new Result(Message.GENRES_DOES_NOT_EXIST.getCode(), false, Message.GENRES_DOES_NOT_EXIST.getMessage());
                 finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new Genres());
             } else {
@@ -168,22 +166,22 @@ public class GenresService {
         return finalResult;
     }
 
-    public Map<Object, Object> getGenresForSelect() {
-        Map<Object, Object> finalResult = new HashMap<>();
-        Result result = Result.OK();
-        try {
-            List<GenresSelect> list = this.genresRepository.getGenresForSelect();
-            if (list.isEmpty()) {
-                finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
-            } else {
-                finalResult.put(Constant.RESPONSE_KEY.DATA, list);
-            }
-        } catch (Exception e) {
-            System.out.println("Lỗi khi thực hiện lấy ra danh sách thể loại nhạc! {} " + e.getMessage());
-            result = new Result(Message.ERROR_WHILE_RETRIEVING_GENRES_LIST.getCode(), false, Message.ERROR_WHILE_SEARCHING_FOR_SONGS.getMessage());
-        }
-        finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
-        return finalResult;
-    }
+//    public Map<Object, Object> getGenresForSelect() {
+//        Map<Object, Object> finalResult = new HashMap<>();
+//        Result result = Result.OK();
+//        try {
+//            List<ComboboxValue> list = this.genresRepository.getGenresForSelect();
+//            if (list.isEmpty()) {
+//                finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
+//            } else {
+//                finalResult.put(Constant.RESPONSE_KEY.DATA, list);
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Lỗi khi thực hiện lấy ra danh sách thể loại nhạc! {} " + e.getMessage());
+//            result = new Result(Message.ERROR_WHILE_RETRIEVING_GENRES_LIST.getCode(), false, Message.ERROR_WHILE_SEARCHING_FOR_SONGS.getMessage());
+//        }
+//        finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+//        return finalResult;
+//    }
 
 }

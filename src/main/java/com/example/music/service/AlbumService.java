@@ -3,7 +3,7 @@ package com.example.music.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.music.dao.AlbumSelect;
-import com.example.music.dto.AlbumDTO;
+import com.example.music.dto.AlbumRequest;
 import com.example.music.entity.Album;
 import com.example.music.entity.User;
 import com.example.music.entity.comon.Constant;
@@ -73,7 +73,7 @@ public class AlbumService {
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> insertAlbum(AlbumDTO albumDTO) throws IOException, ParseException {
+    public Map<Object, Object> insertAlbum(AlbumRequest albumDTO) throws IOException, ParseException {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
@@ -98,7 +98,7 @@ public class AlbumService {
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> updateAlbum(String  id, AlbumDTO albumDTO) throws Exception {
+    public Map<Object, Object> updateAlbum(String  id, AlbumRequest albumDTO) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
