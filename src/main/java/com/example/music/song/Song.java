@@ -1,9 +1,9 @@
 package com.example.music.song;
 
 import com.example.music.album.Album;
+import com.example.music.own.Own;
 import com.example.music.song_favorite.SongFavorite;
 import com.example.music.song_genres.SongGenres;
-import com.example.music.own.Own;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

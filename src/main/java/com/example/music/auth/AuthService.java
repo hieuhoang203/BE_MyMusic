@@ -3,14 +3,16 @@ package com.example.music.auth;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.api.ApiResponse;
 import com.cloudinary.utils.ObjectUtils;
-import com.example.music.data.DetailAccount;
-import com.example.music.user.User;
 import com.example.music.comon.Constant;
 import com.example.music.comon.Message;
 import com.example.music.comon.Result;
-import com.example.music.user.UserRepository;
+import com.example.music.data.DetailAccount;
 import com.example.music.security.JwtService;
+import com.example.music.user.User;
+import com.example.music.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -120,17 +122,21 @@ public class AuthService {
         Result result = Result.OK();
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPass()));
-            if (authentication.isAuthenticated()) {
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPass())
+            );
+
+            if (!authentication.isAuthenticated()) {
+                AccountResponse accountResponse = new AccountResponse("Không có quyền truy cập", login.getLogin());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, accountResponse);
+            } else {
                 User user = userRepository.getUserByEmail(login.getLogin());
-                if (user == null) {
-                    throw new UsernameNotFoundException("User not found");
+                if (user != null) {
+                    String token = jwtService.generateToken(user);
+                    AccountResponse accountResponse = new AccountResponse(token, user.getLogin());
+                    finalResult.put(Constant.RESPONSE_KEY.DATA, accountResponse);
                 }
-                String token = jwtService.generateToken(user);
-                AccountResponse response = new AccountResponse(token, login.getLogin());
-                finalResult.put(Constant.RESPONSE_KEY.DATA, response);
             }
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             result = new Result(Message.CANNOT_LOG_IN.getCode(), false, Message.CANNOT_LOG_IN.getMessage());

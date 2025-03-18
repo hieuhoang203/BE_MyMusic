@@ -27,9 +27,9 @@ public class JwtService {
         return Jwts.builder()
                 .setSubject(user.getLogin())
                 .claim("role", user.getRole())
-                .setIssuer("DCB")
+                .setIssuer("Sublime")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 600000))
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 1 giờ
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -38,9 +38,18 @@ public class JwtService {
         return extractClaims(token, Claims::getSubject);
     }
 
+    public String extractRole(String token) {
+        return extractClaims(token).get("role", String.class);
+    }
+
     private <T> T extractClaims(String token, Function<Claims, T> claimsResolver) {
         Claims claims = extractClaims(token);
         return claimsResolver.apply(claims);
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUserName(token); // Lấy username từ token
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     private Claims extractClaims(String token) {
@@ -49,11 +58,6 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-    }
-
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String userName = extractUserName(token);
-        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token) {
@@ -65,3 +69,4 @@ public class JwtService {
     }
 
 }
+

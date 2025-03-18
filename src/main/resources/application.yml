@@ -1,5 +1,10 @@
 server:
   port: 8920
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
 redis:
   redisson:
     host: redis://127.0.0.1:6379

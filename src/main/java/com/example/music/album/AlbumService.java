@@ -9,7 +9,6 @@ import com.example.music.comon.SelectValue;
 import com.example.music.user.User;
 import com.example.music.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
