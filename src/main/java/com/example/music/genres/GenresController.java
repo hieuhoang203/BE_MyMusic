@@ -4,9 +4,6 @@ import com.example.music.comon.ResponseData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +26,7 @@ public class GenresController {
     private final GenresService genresService;
 
     @PostMapping(value = "/save")
-    @PreAuthorize("hasRole('ADMIN')")
-    public CompletableFuture<ResponseData> saveGenre(@RequestBody GenresRequest dto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("🛡️ Current Authentication: " + auth);
-
+    public CompletableFuture<ResponseData> saveGenres(@RequestBody GenresRequest dto) {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.saveGenres(dto)));
     }
 
@@ -43,7 +36,7 @@ public class GenresController {
     }
 
     @PutMapping(value = "/update/{id}")
-    public CompletableFuture<ResponseData> updateGenre(@PathVariable String id, @RequestBody GenresRequest dto) {
+    public CompletableFuture<ResponseData> updateGenres(@PathVariable String id, @RequestBody GenresRequest dto) {
         return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.updateGenres(id, dto)));
     }
 

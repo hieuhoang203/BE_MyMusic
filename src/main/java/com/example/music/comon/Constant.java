@@ -7,10 +7,10 @@ public class Constant {
         String DATA = "DATA_KEY";
     }
 
-    public interface Role {
-        String ADMIN = "ADMIN";
-        String USER = "USER";
-        String ARTIS = "ARTIS";
+    public enum Role {
+        ADMIN,
+        USER,
+        ARTIS
     }
 
     public interface Status {

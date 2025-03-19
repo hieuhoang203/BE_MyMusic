@@ -75,12 +75,12 @@ public class AuthService {
                     .create_date(create)
                     .login(request.getLogin())
                     .password(passwordEncoder.encode(request.getPass()))
-                    .role(Constant.Role.USER)
+                    .role(String.valueOf(Constant.Role.USER))
                     .create_by(Constant.Create.NTH)
                     .status(Constant.Status.Activate)
                     .build();
             this.userRepository.save(user);
-            finalResult.put(Constant.RESPONSE_KEY.DATA, jwtService.generateToken(user));
+            finalResult.put(Constant.RESPONSE_KEY.DATA, jwtService.generateToken(user.getLogin()));
         } catch (Exception e) {
             System.out.println("Xảy ra lỗi khi tạo mới người dùng {} " + e.getMessage());
             result = new Result(Message.UNABLE_TO_CREATE_ACCOUNT.getCode(), false, Message.UNABLE_TO_CREATE_ACCOUNT.getMessage());
@@ -104,7 +104,7 @@ public class AuthService {
                     .create_date(new Date(new java.util.Date().getTime()))
                     .login(request.getLogin())
                     .password(passwordEncoder.encode(request.getPass()))
-                    .role(Constant.Role.ARTIS)
+                    .role(String.valueOf(Constant.Role.ARTIS))
                     .status(Constant.Status.Activate)
                     .build();
             this.userRepository.save(user);
@@ -122,8 +122,7 @@ public class AuthService {
         Result result = Result.OK();
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPass())
-            );
+                    new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPass()));
 
             if (!authentication.isAuthenticated()) {
                 AccountResponse accountResponse = new AccountResponse("Không có quyền truy cập", login.getLogin());
@@ -131,7 +130,8 @@ public class AuthService {
             } else {
                 User user = userRepository.getUserByEmail(login.getLogin());
                 if (user != null) {
-                    String token = jwtService.generateToken(user);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    String token = jwtService.generateToken(authentication.getName());
                     AccountResponse accountResponse = new AccountResponse(token, user.getLogin());
                     finalResult.put(Constant.RESPONSE_KEY.DATA, accountResponse);
                 }

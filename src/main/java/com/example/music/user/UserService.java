@@ -197,8 +197,8 @@ public class UserService {
                     user.setAvatar(cloud.get("secure_url").toString());
                 }
             }
-            user.setRole(dto.getRole().trim().equalsIgnoreCase("Admin") ? Constant.Role.ADMIN
-                    : dto.getRole().trim().equalsIgnoreCase("Artis") ? Constant.Role.ARTIS : Constant.Role.USER);
+            user.setRole(dto.getRole().trim().equalsIgnoreCase("Admin") ? String.valueOf(Constant.Role.ADMIN)
+                    : dto.getRole().trim().equalsIgnoreCase("Artis") ? String.valueOf(Constant.Role.ARTIS) : String.valueOf(Constant.Role.USER));
             user.setName(dto.getName().trim());
             user.setBirthday(new Date(simpleDateFormat.parse(dto.getBirthday()).getTime()));
             user.setUpdate_date(new Date(new java.util.Date().getTime()));
