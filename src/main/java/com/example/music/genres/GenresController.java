@@ -26,8 +26,8 @@ public class GenresController {
     private final GenresService genresService;
 
     @PostMapping(value = "/save")
-    public CompletableFuture<ResponseData> saveGenres(@RequestBody GenresRequest dto) {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.saveGenres(dto)));
+    public ResponseData saveGenres(@RequestBody GenresRequest dto) {
+        return ResponseData.createResponse(this.genresService.saveGenres(dto));
     }
 
     @PostMapping(value = "/verify")

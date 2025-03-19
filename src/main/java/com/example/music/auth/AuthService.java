@@ -75,7 +75,7 @@ public class AuthService {
                     .create_date(create)
                     .login(request.getLogin())
                     .password(passwordEncoder.encode(request.getPass()))
-                    .role(String.valueOf(Constant.Role.USER))
+                    .role(String.valueOf(Constant.Role.ADMIN))
                     .create_by(Constant.Create.NTH)
                     .status(Constant.Status.Activate)
                     .build();
