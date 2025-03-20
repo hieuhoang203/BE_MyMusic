@@ -27,19 +27,17 @@ public class GenresService {
         Result result = Result.OK();
         Boolean check = true;
         try {
-            if (genresDTO.getCode().isEmpty() || genresRepository.checkCodeOrNameExists("code", genresDTO.getCode()) == 1) {
+            if (genresDTO.getCode().isEmpty() || genresRepository.checkCode(genresDTO.getCode()) != null) {
                 result = new Result(Message.INVALID_MUSIC_GENRE_CODE.getCode(), false, Message.INVALID_MUSIC_GENRE_CODE.getMessage());
                 check = false;
             }
 
-            if (genresDTO.getName().isEmpty() || genresRepository.checkCodeOrNameExists("name", genresDTO.getName()) == 1) {
+            if (genresDTO.getName().isEmpty() || genresRepository.checkName(genresDTO.getName()) != null) {
                 result = new Result(Message.INVALID_MUSIC_GENRES_NAME.getCode(), false, Message.INVALID_MUSIC_GENRES_NAME.getMessage());
                 check = false;
             }
             if (check) {
                 finalResult.put(Constant.RESPONSE_KEY.DATA, genresDTO);
-            } else {
-                finalResult.put(Constant.RESPONSE_KEY.DATA, new Genres());
             }
         } catch (Exception e) {
             System.out.println("Xảy ra lỗi khi thực hiện xác minh thông tin ! {} " + e.getMessage());
@@ -53,6 +51,19 @@ public class GenresService {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
+            if (genresDTO.getCode().isEmpty() || genresRepository.checkCode(genresDTO.getCode()) != null) {
+                result = new Result(Message.INVALID_MUSIC_GENRE_CODE.getCode(), false, Message.INVALID_MUSIC_GENRE_CODE.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                finalResult.put(Constant.RESPONSE_KEY.DATA, genresDTO);
+                return finalResult;
+            }
+
+            if (genresDTO.getName().isEmpty() || genresRepository.checkName(genresDTO.getName()) != null) {
+                result = new Result(Message.INVALID_MUSIC_GENRES_NAME.getCode(), false, Message.INVALID_MUSIC_GENRES_NAME.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                finalResult.put(Constant.RESPONSE_KEY.DATA, genresDTO);
+                return finalResult;
+            }
             Genres genres = Genres.builder()
                     .id(UUID.randomUUID().toString())
                     .code(genresDTO.getCode())

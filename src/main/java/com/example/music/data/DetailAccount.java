@@ -1,30 +1,19 @@
 package com.example.music.data;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.sql.Date;
 
-@Data
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class DetailAccount {
+public interface DetailAccount {
 
-    private String id;
+    String getId();
 
-    private String name;
+    String getName();
 
-    private Boolean gender;
+    Boolean getGender();
 
-    private Date birthday;
+    Date getBirthday();
 
-    private String avatar;
+    String getAvatar();
 
-    private String role;
+    String getRole();
 
 }
