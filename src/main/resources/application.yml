@@ -5,20 +5,28 @@ logging:
     org:
       springframework:
         security: DEBUG
+#redis:
+#  redisson:
+#    host: redis://127.0.0.1:6379
+#    connection-pool-size: 10
+#    connection-minimum-idle-size: 5
+#    connect-timeout: 30000
 redis:
   redisson:
-    host: redis://127.0.0.1:6379
+    host: rediss://pet-albacore-37760.upstash.io:6379
     connection-pool-size: 10
     connection-minimum-idle-size: 5
-    connect-timeout: 30000
+    connect-timeout: 10000
+    password: AZOAAAIjcDE1MmJkNjg3YjA3YmE0YjhjOTIwMWQxYmQyODZjMDM5YnAxMA
+
 spring:
   application:
     name: MusicApp
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ufiscphaens3s44k
-    password: vI8A8xguC19ru7gXvXyx
-    url: jdbc:mysql://bj7yxduhhhhly6jh3sek-mysql.services.clever-cloud.com:3306/bj7yxduhhhhly6jh3sek
+    username: root
+    password: LbAjfhGflNGkOWqdHKQCKBKfOhYwcSZo
+    url: jdbc:mysql://mainline.proxy.rlwy.net:39722/railway
 #    username: root
 #    password: 892003
 #    url: jdbc:mysql://localhost:3306/sublime
