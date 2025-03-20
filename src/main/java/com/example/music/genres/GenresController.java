@@ -47,7 +47,7 @@ public class GenresController {
 
     @GetMapping(value = "/search/{id}")
     public ResponseData search(@PathVariable String id) {
-        return ResponseData.createResponse(this.genresService.searchGenre(id));
+        return ResponseData.createResponse(this.genresService.searchGenres(id));
     }
 
     @GetMapping(value = "/getAll")

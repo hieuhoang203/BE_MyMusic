@@ -1,6 +1,7 @@
 package com.example.music.song;
 
 import com.example.music.comon.ResponseData;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,13 +31,13 @@ public class SongAdminController {
     }
 
     @PostMapping(value = "/save")
-    public ResponseData insert(@ModelAttribute SongRequest songDTO) throws IOException {
-        return ResponseData.createResponse(songService.adminInsertSong(songDTO));
+    public ResponseData insert(@ModelAttribute SongRequest songDTO, @Param("type") Byte type) throws IOException {
+        return ResponseData.createResponse(songService.adminInsertSong(songDTO, type));
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseData update(@PathVariable String id, @ModelAttribute SongRequest songDTO) throws Exception {
-        return ResponseData.createResponse(songService.adminUpdateSong(id, songDTO));
+    public ResponseData update(@PathVariable String id, @ModelAttribute SongRequest songDTO, @Param("type") Byte type) throws Exception {
+        return ResponseData.createResponse(songService.adminUpdateSong(id, songDTO, type));
     }
 
     @GetMapping(value = "/search/{id}")
