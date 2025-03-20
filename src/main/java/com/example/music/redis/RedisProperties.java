@@ -11,6 +11,9 @@ public class RedisProperties {
     @Value("${redis.redisson.host}")
     private String host;
 
+    @Value("${redis.redisson.password}")
+    private String password;
+
     @Value("${redis.redisson.connection-pool-size}")
     private Integer connectionPollSize;
 

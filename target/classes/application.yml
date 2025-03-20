@@ -5,12 +5,20 @@ logging:
     org:
       springframework:
         security: DEBUG
+#redis:
+#  redisson:
+#    host: redis://127.0.0.1:6379
+#    connection-pool-size: 10
+#    connection-minimum-idle-size: 5
+#    connect-timeout: 30000
 redis:
   redisson:
-    host: redis://127.0.0.1:6379
+    host: rediss://pet-albacore-37760.upstash.io:6379
     connection-pool-size: 10
     connection-minimum-idle-size: 5
-    connect-timeout: 30000
+    connect-timeout: 10000
+    password: AZOAAAIjcDE1MmJkNjg3YjA3YmE0YjhjOTIwMWQxYmQyODZjMDM5YnAxMA
+
 spring:
   application:
     name: MusicApp
