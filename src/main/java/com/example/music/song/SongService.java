@@ -138,9 +138,12 @@ public class SongService {
         return finalResult;
     }
 
+    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     public Map<Object, Object> changeStatusSong(String id, String status) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
+        finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
+
         try {
             Song song = songRepository.findById(id).orElse(null);
             if (song == null) {
@@ -155,6 +158,7 @@ public class SongService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện cập nhật trạng thái bài hát! {} " + e.getMessage());
             result = new Result(Message.CANNOT_UPDATE_STATUS.getCode(), false, Message.CANNOT_UPDATE_STATUS.getMessage());
+            throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -163,6 +167,7 @@ public class SongService {
     public Map<Object, Object> detailSong(String id) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
+        finalResult.put(Constant.RESPONSE_KEY.DATA, new Song());
         try {
             Song song = songRepository.findById(id).orElse(null);
             if (song == null) {
@@ -189,11 +194,51 @@ public class SongService {
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> adminInsertSong(SongRequest dto) throws IOException {
+    public Map<Object, Object> adminInsertSong(SongRequest dto, Byte type) throws IOException {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
+        finalResult.put(Constant.RESPONSE_KEY.DATA, finalResult);
 
         try {
+
+            if (type == 1 && dto.getAvatar().isEmpty()) {
+                result = new Result(Message.PHOTO_CANNOT_BE_BLANK.getCode(), false, Message.PHOTO_CANNOT_BE_BLANK.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+            }
+
+            if (type == 1 && dto.getSound().isEmpty()) {
+                result = new Result(Message.AUDIO_FILE_CANNOT_BE_BLANK.getCode(), false, Message.AUDIO_FILE_CANNOT_BE_BLANK.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+            }
+
+            if (dto.getName().isEmpty()) {
+                result = new Result(Message.SONG_NAME_IS_BLANK.getMessage(), false, Message.SONG_NAME_IS_BLANK.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+            }
+
+            if (dto.getDuration() <= 0 || dto.getDuration() == null) {
+                result = new Result(Message.INVALID_SONG_DURATION.getCode(), false, Message.INVALID_SONG_DURATION.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+            }
+
+            for (String genreId : dto.getGenres()) {
+                Genres genres = genresRepository.findById(genreId).orElse(null);
+                if (genres == null) {
+                    result = new Result(Message.MUSIC_GENRE_DOES_NOT_EXIST.getCode(), false, Message.MUSIC_GENRE_DOES_NOT_EXIST.getMessage());
+                    finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                    break;
+                }
+            }
+
+            for (String artisId : dto.getArtis()) {
+                User user = userRepository.findById(artisId).orElse(null);
+                if (user == null) {
+                    result = new Result(Message.AUTHOR_DOES_NOT_EXIST.getCode(), false, Message.AUTHOR_DOES_NOT_EXIST.getMessage());
+                    finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                    break;
+                }
+            }
+
             Set<SongGenres> songGenresSet = new HashSet<>();
             Set<Own> ownSet = new HashSet<>();
 
@@ -226,12 +271,54 @@ public class SongService {
     }
 
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> adminUpdateSong(String id, SongRequest dto) throws Exception {
+    public Map<Object, Object> adminUpdateSong(String id, SongRequest dto, Byte type) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
-        Set<SongGenres> songGenresSet = new HashSet<>();
-        Set<Own> ownSet = new HashSet<>();
+        finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+
         try {
+
+            if (type == 1 && dto.getAvatar().isEmpty()) {
+                result = new Result(Message.PHOTO_CANNOT_BE_BLANK.getCode(), false, Message.PHOTO_CANNOT_BE_BLANK.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+            }
+
+            if (type == 1 && dto.getSound().isEmpty()) {
+                result = new Result(Message.AUDIO_FILE_CANNOT_BE_BLANK.getCode(), false, Message.AUDIO_FILE_CANNOT_BE_BLANK.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+            }
+
+            if (dto.getName().isEmpty()) {
+                result = new Result(Message.SONG_NAME_IS_BLANK.getMessage(), false, Message.SONG_NAME_IS_BLANK.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+            }
+
+            if (dto.getDuration() <= 0 || dto.getDuration() == null) {
+                result = new Result(Message.INVALID_SONG_DURATION.getCode(), false, Message.INVALID_SONG_DURATION.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+            }
+
+            for (String genreId : dto.getGenres()) {
+                Genres genres = genresRepository.findById(genreId).orElse(null);
+                if (genres == null) {
+                    result = new Result(Message.MUSIC_GENRE_DOES_NOT_EXIST.getCode(), false, Message.MUSIC_GENRE_DOES_NOT_EXIST.getMessage());
+                    finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                    break;
+                }
+            }
+
+            for (String artisId : dto.getArtis()) {
+                User user = userRepository.findById(artisId).orElse(null);
+                if (user == null) {
+                    result = new Result(Message.AUTHOR_DOES_NOT_EXIST.getCode(), false, Message.AUTHOR_DOES_NOT_EXIST.getMessage());
+                    finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                    break;
+                }
+            }
+
+            Set<SongGenres> songGenresSet = new HashSet<>();
+            Set<Own> ownSet = new HashSet<>();
+
             Song song = this.songRepository.findById(id).orElse(null);
             assert song != null;
             if (dto.getAvatar() != null) {
@@ -306,6 +393,7 @@ public class SongService {
     public Map<Object, Object> getSongByStatus(String status, Long pageable) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
+        finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         try {
             List<Song> songs = this.songRepository.getSong(status);
             if (songs.isEmpty()) {

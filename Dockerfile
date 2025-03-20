@@ -1,8 +1,15 @@
-FROM maven:3.8.5-openjdk-17 AS build
-COPY . .
-RUN mvn clean package -DskipTests
+# Sử dụng image Java chính thức làm base image
+FROM openjdk:17-jdk-slim
 
-FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /target/music-0.0.1-SNAPSHOT.jar music.jar
-EXPOSE 8903
-ENTRYPOINT ["java", "-jar", "music.jar"]
+# Đặt thư mục làm việc trong container
+WORKDIR /app
+
+# Copy file JAR đã build vào container
+COPY target/music-0.0.1-SNAPSHOT.jar app.jar
+
+# Cấu hình cổng mà ứng dụng sẽ chạy (Render sẽ tự động gán PORT qua biến môi trường)
+ENV PORT=8920
+EXPOSE 8920
+
+# Lệnh để chạy ứng dụng Spring Boot
+CMD ["java", "-jar", "app.jar"]

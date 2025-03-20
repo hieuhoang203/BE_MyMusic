@@ -14,8 +14,11 @@ import java.util.List;
 @Repository
 public interface GenresRepository extends JpaRepository<Genres, String> {
 
-    @Query(value = "SELECT 1 FROM tbl_genres WHERE LOWER(:column) = LOWER(:value) LIMIT 1", nativeQuery = true)
-    Integer checkCodeOrNameExists(@Param("column") String column, @Param("value") String value);
+    @Query(value = "SELECT 1 FROM tbl_genres WHERE LOWER(code) = LOWER(:value) LIMIT 1", nativeQuery = true)
+    Integer checkCode(@Param("value") String value);
+
+    @Query(value = "SELECT 1 FROM tbl_genres WHERE LOWER(name) = LOWER(:value) LIMIT 1", nativeQuery = true)
+    Integer checkName(@Param("value") String value);
 
     @Modifying
     @Query(value = "update tbl_genres set status = :status where id = :id", nativeQuery = true)

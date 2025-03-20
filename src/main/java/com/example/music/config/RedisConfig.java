@@ -19,9 +19,11 @@ public class RedisConfig {
         Config config = new Config();
         config.useSingleServer()
                 .setAddress(properties.getHost())
+                .setPassword(properties.getPassword())
                 .setConnectionMinimumIdleSize(properties.getConnectionMinimumIdleSize())
                 .setConnectionPoolSize(properties.getConnectionPollSize())
-                .setConnectTimeout(properties.getConnectionTimeout());
+                .setConnectTimeout(properties.getConnectionTimeout())
+                .setSslEnableEndpointIdentification(false);
         return Redisson.create(config);
     }
 

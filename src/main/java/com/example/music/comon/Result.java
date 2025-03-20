@@ -3,18 +3,20 @@ package com.example.music.comon;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class Result {
 
     @JsonProperty("responseCode")
     private String responseCode;
 
     @JsonProperty("status")
-    private boolean status;
+    private Boolean status;
 
     @JsonProperty("responseMessage")
     private String message;

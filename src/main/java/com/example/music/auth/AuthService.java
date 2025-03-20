@@ -11,13 +11,10 @@ import com.example.music.security.JwtService;
 import com.example.music.user.User;
 import com.example.music.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,29 +38,31 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public Map<Object, Object> verifyAccount(AccountRequest request) {
-        Map<Object, Object> finalResult = new HashMap<>();
-        Result result = Result.OK();
-        if (request.getLogin() == null || request.getLogin().isEmpty()) {
-            result = new Result(Message.INVALID_EMAIL.getCode(), false, Message.INVALID_EMAIL.getMessage());
-        }
-        if (request.getPass() == null || request.getPass().isEmpty() || request.getPass().length() < 6) {
-            result = new Result(Message.INVALID_PASSWORD.getCode(), false, Message.INVALID_PASSWORD.getMessage());
-        }
-        User user = userRepository.getUserByEmail(request.getLogin());
-        if (user != null) {
-            result = new Result(Message.ACCOUNT_ALREADY_EXISTS.getCode(), false, Message.ACCOUNT_ALREADY_EXISTS.getMessage());
-        }
-        finalResult.put("result", result);
-        return finalResult;
-    }
-
     @Transactional(rollbackFor = {Exception.class, Throwable.class})
     public Map<Object, Object> createAccountUser(AccountRequest request) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
 
         try {
+            User data = userRepository.getUserByEmail(request.getLogin());
+            if (request.getLogin().isEmpty()) {
+                result = new Result(Message.INVALID_EMAIL.getCode(), false, Message.INVALID_EMAIL.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                finalResult.put(Constant.RESPONSE_KEY.DATA, request);
+                return finalResult;
+            }
+            if (request.getPass().isEmpty() || request.getPass().length() < 6) {
+                result = new Result(Message.INVALID_PASSWORD.getCode(), false, Message.INVALID_PASSWORD.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                finalResult.put(Constant.RESPONSE_KEY.DATA, request);
+                return finalResult;
+            }
+            if (data != null) {
+                result = new Result(Message.ACCOUNT_ALREADY_EXISTS.getCode(), false, Message.ACCOUNT_ALREADY_EXISTS.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                finalResult.put(Constant.RESPONSE_KEY.DATA, data);
+                return finalResult;
+            }
             Date create = new Date(System.currentTimeMillis());
 
             ApiResponse apiResponse = cloudinary.api().resourceByAssetID("6089f07ca3500cc8c9362a3edb3be8d7", ObjectUtils.emptyMap());
@@ -75,7 +74,7 @@ public class AuthService {
                     .create_date(create)
                     .login(request.getLogin())
                     .password(passwordEncoder.encode(request.getPass()))
-                    .role(String.valueOf(Constant.Role.ADMIN))
+                    .role(String.valueOf(Constant.Role.USER))
                     .create_by(Constant.Create.NTH)
                     .status(Constant.Status.Activate)
                     .build();
@@ -94,6 +93,7 @@ public class AuthService {
     public Map<Object, Object> createAccountArtis(AccountRequest request) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
+        finalResult.put(Constant.RESPONSE_KEY.DATA, request);
         try {
             ApiResponse apiResponse = cloudinary.api().resourceByAssetID("6089f07ca3500cc8c9362a3edb3be8d7", ObjectUtils.emptyMap());
 
@@ -120,6 +120,7 @@ public class AuthService {
     public Map<Object, Object> login(LoginRequest login) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
+        finalResult.put(Constant.RESPONSE_KEY.DATA, login);
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPass()));
@@ -148,6 +149,7 @@ public class AuthService {
     public Map<Object, Object> getUserResponse(String login) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
+        finalResult.put(Constant.RESPONSE_KEY.DATA, login);
         try {
             DetailAccount userResponse = userRepository.getUserResponse(login);
             finalResult.put(Constant.RESPONSE_KEY.DATA, userResponse);

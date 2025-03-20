@@ -1,9 +1,14 @@
 package com.example.music.genres;
 
+import com.example.music.comon.Constant;
 import com.example.music.comon.ResponseData;
+import com.example.music.comon.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.CompletableFuture;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/genres")
@@ -30,35 +35,30 @@ public class GenresController {
         return ResponseData.createResponse(this.genresService.saveGenres(dto));
     }
 
-    @PostMapping(value = "/verify")
-    public CompletableFuture<ResponseData> verifyGenres(@RequestBody GenresRequest dto) {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.verifyGenres(dto)));
-    }
-
     @PutMapping(value = "/update/{id}")
-    public CompletableFuture<ResponseData> updateGenres(@PathVariable String id, @RequestBody GenresRequest dto) {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.updateGenres(id, dto)));
+    public ResponseData updateGenres(@PathVariable String id, @RequestBody GenresRequest dto) {
+        return ResponseData.createResponse(this.genresService.updateGenres(id, dto));
     }
 
     @DeleteMapping(value = "/change-status/{id}")
-    public CompletableFuture<ResponseData> changeStatus(@PathVariable String id, @RequestParam(name = "status", defaultValue = "ShutDown") String status) {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.changeStatus(id, status)));
+    public ResponseData changeStatus(@PathVariable String id, @RequestParam(name = "status", defaultValue = "ShutDown") String status) {
+        return ResponseData.createResponse(this.genresService.changeStatus(id, status));
     }
 
     @GetMapping(value = "/search/{id}")
-    public CompletableFuture<ResponseData> search(@PathVariable String id) {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.searchGenre(id)));
+    public ResponseData search(@PathVariable String id) {
+        return ResponseData.createResponse(this.genresService.searchGenres(id));
     }
 
     @GetMapping(value = "/getAll")
-    public CompletableFuture<ResponseData> getAll(@RequestParam(name = "page", defaultValue = "0") Integer page) {
+    public ResponseData getAll(@RequestParam(name = "page", defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, 5);
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.getAll(pageable)));
+        return ResponseData.createResponse(this.genresService.getAll(pageable));
     }
 
     @GetMapping(value = "/get-genres-select")
-    public CompletableFuture<ResponseData> getGenresForSelect() {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.genresService.getGenresForSelect()));
+    public ResponseData getGenresForSelect() {
+        return ResponseData.createResponse(this.genresService.getGenresForSelect());
     }
 
 }
