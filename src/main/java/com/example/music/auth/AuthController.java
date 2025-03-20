@@ -2,15 +2,10 @@ package com.example.music.auth;
 
 import com.example.music.comon.ResponseData;
 import com.example.music.user.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/auth")
@@ -23,7 +18,7 @@ public class AuthController {
     private final UserRepository userRepository;
 
     @PostMapping(value = "/register")
-    public ResponseData register(@RequestBody AccountRequest accountRequest) throws Exception {
+    public ResponseData register(@Valid @RequestBody AccountRequest accountRequest) throws Exception {
         return ResponseData.createResponse(this.service.createAccountUser(accountRequest));
     }
 

@@ -42,7 +42,6 @@ public class AuthService {
     public Map<Object, Object> createAccountUser(AccountRequest request) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
-
         try {
             User data = userRepository.getUserByEmail(request.getLogin());
             if (request.getLogin().isEmpty()) {
@@ -82,6 +81,7 @@ public class AuthService {
             finalResult.put(Constant.RESPONSE_KEY.DATA, jwtService.generateToken(user.getLogin()));
         } catch (Exception e) {
             System.out.println("Xảy ra lỗi khi tạo mới người dùng {} " + e.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, request);
             result = new Result(Message.UNABLE_TO_CREATE_ACCOUNT.getCode(), false, Message.UNABLE_TO_CREATE_ACCOUNT.getMessage());
             throw e;
         }
