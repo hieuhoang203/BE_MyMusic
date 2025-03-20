@@ -26,43 +26,43 @@ public class SongArtisController {
     private SongService songService;
 
     @GetMapping(value = "")
-    public CompletableFuture<ResponseData> getObject(@RequestParam(name = "status", defaultValue = "Wait") String status, @RequestParam(name = "page", defaultValue = "0") Long page) {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.songService.getSongByStatus(status, page)));
+    public ResponseData getObject(@RequestParam(name = "status", defaultValue = "Wait") String status, @RequestParam(name = "page", defaultValue = "0") Long page) {
+        return ResponseData.createResponse(this.songService.getSongByStatus(status, page));
     }
 
 //    @GetMapping(value = "/select")
-//    public ResponseEntity<Map<Long, Song>> select(@RequestParam(value = "status", defaultValue = "Activate") String status) {
+//    public ResponseEntity<Map<Long, Song select(@RequestParam(value = "status", defaultValue = "Activate") String status) {
 //        try {
-//            return new ResponseEntity<>(this.songService.select(status), HttpStatus.OK);
+//            return new ResponseEntity<(this.songService.select(status), HttpStatus.OK);
 //        } catch (Exception e) {
-//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//            return new ResponseEntity<(null, HttpStatus.BAD_REQUEST);
 //        }
 //    }
 
     @PostMapping(value = "/save")
-    public CompletableFuture<ResponseData> insert(@ModelAttribute SongRequest songDTO) throws IOException {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(songService.adminInsertSong(songDTO)));
+    public ResponseData insert(@ModelAttribute SongRequest songDTO) throws IOException {
+        return ResponseData.createResponse(songService.adminInsertSong(songDTO));
     }
 
     @PutMapping(value = "/update/{id}")
-    public CompletableFuture<ResponseData> update(@PathVariable String id, @ModelAttribute SongRequest songDTO) throws Exception {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(songService.adminUpdateSong(id, songDTO)));
+    public ResponseData update(@PathVariable String id, @ModelAttribute SongRequest songDTO) throws Exception {
+        return ResponseData.createResponse(songService.adminUpdateSong(id, songDTO));
     }
 
     @GetMapping(value = "/search/{id}")
-    public CompletableFuture<ResponseData> search(@PathVariable String id) {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(songService.detailSong(id)));
+    public ResponseData search(@PathVariable String id) {
+        return ResponseData.createResponse(songService.detailSong(id));
     }
 
     @GetMapping(value = "/get-all-song")
-    public CompletableFuture<ResponseData> getAllSong(@RequestParam(name = "page", defaultValue = "0") Integer page) {
+    public ResponseData getAllSong(@RequestParam(name = "page", defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, 3);
-        return CompletableFuture.completedFuture(ResponseData.createResponse(songService.getAllSong(pageable)));
+        return ResponseData.createResponse(songService.getAllSong(pageable));
     }
 
     @GetMapping(value = "/update-song-status")
-    public CompletableFuture<ResponseData> updateSongStatus(@RequestParam(name = "id") String id, @RequestParam(name = "status") String status) {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(songService.changeStatusSong(id, status)));
+    public ResponseData updateSongStatus(@RequestParam(name = "id") String id, @RequestParam(name = "status") String status) {
+        return ResponseData.createResponse(songService.changeStatusSong(id, status));
     }
 
 }

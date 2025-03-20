@@ -11,13 +11,10 @@ import com.example.music.security.JwtService;
 import com.example.music.user.User;
 import com.example.music.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,7 +72,7 @@ public class AuthService {
                     .create_date(create)
                     .login(request.getLogin())
                     .password(passwordEncoder.encode(request.getPass()))
-                    .role(String.valueOf(Constant.Role.ADMIN))
+                    .role(String.valueOf(Constant.Role.USER))
                     .create_by(Constant.Create.NTH)
                     .status(Constant.Status.Activate)
                     .build();
