@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy file JAR đã build vào container
-COPY target/your-app-0.0.1-SNAPSHOT.jar app.jar
+COPY target/music-0.0.1-SNAPSHOT.jar app.jar
 
 # Cấu hình cổng mà ứng dụng sẽ chạy (Render sẽ tự động gán PORT qua biến môi trường)
 ENV PORT=8920
