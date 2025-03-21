@@ -39,10 +39,15 @@ public class AlbumService {
         Result result = Result.OK();
         try {
             List<SelectValue> data = this.albumRepository.getAlbumForSelect();
-            finalResult.put(Constant.RESPONSE_KEY.DATA, data);
+            if (!data.isEmpty()) {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, data);
+            } else {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
+            }
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện lấy ra data album cho ô select! {} " + e.getMessage());
             result = new Result(Message.ERROR_WHEN_GETTING_ALBUM_DATA_FOR_SELECT_CELL.getCode(), false, Message.ERROR_WHEN_GETTING_ALBUM_DATA_FOR_SELECT_CELL.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -53,10 +58,15 @@ public class AlbumService {
         Result result = Result.OK();
         try {
             List<SelectValue> data = this.albumRepository.getAlbumForSelect(artis);
-            finalResult.put(Constant.RESPONSE_KEY.DATA, data);
+            if (!data.isEmpty()) {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, data);
+            } else {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
+            }
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện lấy ra data album cho ô select! {} " + e.getMessage());
             result = new Result(Message.ERROR_WHEN_GETTING_ALBUM_DATA_FOR_SELECT_CELL.getCode(), false, Message.ERROR_WHEN_GETTING_ALBUM_DATA_FOR_SELECT_CELL.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -80,6 +90,7 @@ public class AlbumService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện thêm mới album! {} " + e.getMessage());
             result = new Result(Message.ERROR_WHILE_ADDING_NEW_ALBUM.getCode(), false, Message.ERROR_WHILE_ADDING_NEW_ALBUM.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, albumDTO);
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -111,6 +122,7 @@ public class AlbumService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện cập nhật album! {} " + e.getMessage());
             result = new Result(Message.ERROR_WHILE_UPDATING_ALBUM.getCode(), false, Message.ERROR_WHILE_UPDATING_ALBUM.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, albumDTO);
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -132,6 +144,7 @@ public class AlbumService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện thay đổi trạng thái album! {} " + e.getMessage());
             result = new Result(Message.ERROR_WHILE_CHANGING_ALBUM_STATUS.getCode(), false, Message.ERROR_WHILE_CHANGING_ALBUM_STATUS.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new Album());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;

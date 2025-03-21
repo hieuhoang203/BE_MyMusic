@@ -100,7 +100,7 @@ public class UserService {
         Result result = Result.OK();
         try {
             Optional<User> user = userRepository.findById(id);
-            if (!user.isEmpty()) {
+            if (user.isPresent()) {
                 UserRequest dto = UserRequest.builder()
                         .id(user.get().getId())
                         .name(user.get().getName())
@@ -116,36 +116,75 @@ public class UserService {
         } catch (Exception e) {
             System.out.println("Lỗi khi lấy ra chi tiết người dùng! {} " + e.getMessage());
             result = new Result(Message.ERROR_RETRIEVING_USER_DETAILS.getCode(), false, Message.ERROR_RETRIEVING_USER_DETAILS.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new UserRequest());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
     }
 
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> insert(UserRequest dto) throws IOException, ParseException {
+    public Map<Object, Object> insert(Byte type, UserRequest dto) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
+
+            if (dto.getName().isEmpty()) {
+                result = new Result(Message.INVALID_USERNAME.getCode(), false, Message.INVALID_USERNAME.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                return finalResult;
+            }
+
+            if (dto.getBirthday().isEmpty()) {
+                result = new Result(Message.INVALID_DATE_OF_BIRTH.getCode(), false, Message.INVALID_DATE_OF_BIRTH.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                return finalResult;
+            }
+
+            if (dto.getGender() == null) {
+                result = new Result(Message.INVALID_GENDER.getCode(), false, Message.INVALID_GENDER.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                return finalResult;
+            }
+
+            if (type == 2 && dto.getAvatar().isEmpty()) {
+                result = new Result(Message.PHOTO_CANNOT_BE_BLANK.getCode(), false, Message.INVALID_PASSWORD.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                return finalResult;
+            }
+
+            if (dto.getEmail().isEmpty() || userRepository.getAllEmail(dto.getEmail()) != null) {
+                result = new Result(Message.EMAIL_USER_EXIST.getCode(), false, Message.EMAIL_USER_EXIST.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                return finalResult;
+            }
+
             Map urlAvt = cloudinary.uploader().upload(dto.getAvatar().getBytes(), params);
-            Random random = new Random(1000000);
+//            Random random = new Random(1000000);
 
             User user = User.builder()
                     .id(UUID.randomUUID().toString())
                     .name(dto.getName().trim())
                     .gender(Boolean.valueOf(dto.getGender()))
                     .login(dto.getEmail())
-                    .password(passwordEncoder.encode(dto.getPassword()))
+//                    .password(passwordEncoder.encode(dto.getPassword()))
+                    .password(passwordEncoder.encode("0966628527"))
                     .birthday(new Date(simpleDateFormat.parse(dto.getBirthday()).getTime()))
                     .avatar(urlAvt.get("secure_url").toString())
                     .create_date(new Date(new java.util.Date().getTime()))
                     .status(Constant.Status.Activate)
+                    .role(dto.getRole())
                     .build();
             this.userRepository.save(user);
 //            javaMailService.sendPassWord(dto.getEmail(), "User creation successful!", random.toString(), dto.getName());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, user);
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện thêm mới người dùng ! {} " + e.getMessage());
             result = new Result(Message.CANNOT_ADD_NEW_USER.getCode(), false, Message.CANNOT_ADD_NEW_USER.getMessage());
-            throw e;
+            finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -166,16 +205,45 @@ public class UserService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện cập nhật trạng thái người dùng! {} " + e.getMessage());
             result = new Result(Message.UNABLE_TO_UPDATE_USER_STATUS.getCode(), false, Message.UNABLE_TO_UPDATE_USER_STATUS.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new User());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
     }
 
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> update(String id, UserRequest dto) throws Exception {
+    public Map<Object, Object> update(String id, UserRequest dto) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
+
+            if (dto.getName().isEmpty()) {
+                result = new Result(Message.INVALID_USERNAME.getCode(), false, Message.INVALID_USERNAME.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                return finalResult;
+            }
+
+            if (dto.getBirthday().isEmpty()) {
+                result = new Result(Message.INVALID_DATE_OF_BIRTH.getCode(), false, Message.INVALID_DATE_OF_BIRTH.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                return finalResult;
+            }
+
+            if (dto.getGender() == null) {
+                result = new Result(Message.INVALID_GENDER.getCode(), false, Message.INVALID_GENDER.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                return finalResult;
+            }
+
+            if (dto.getEmail().isEmpty()) {
+                result = new Result(Message.EMAIL_USER_EXIST.getCode(), false, Message.EMAIL_USER_EXIST.getMessage());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
+                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
+                return finalResult;
+            }
+
             User user = this.userRepository.findById(id).orElse(null);
             if (dto.getAvatar() != null) {
                 if (user.getAvatar() != null) {
@@ -202,7 +270,7 @@ public class UserService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện cập nhật thông tin người dùng! {} " + e.getMessage());
             result = new Result(Message.SYSTEM_ERROR.getCode(), false, Message.SYSTEM_ERROR.getMessage());
-            throw e;
+            finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -213,10 +281,15 @@ public class UserService {
         Result result = Result.OK();
         try {
             Map<String, UserResponse> userMap = this.userRepository.getNewUserOrArtis(role).stream().collect(Collectors.toMap(UserResponse::getId, Function.identity()));
-            finalResult.put(Constant.RESPONSE_KEY.DATA, userMap);
+            if (!userMap.isEmpty()) {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, userMap);
+            }  else {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new HashMap<>());
+            }
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện lấy ra danh sách người dùng mới !{} " + e.getMessage());
             result = new Result(Message.ERROR_WHILE_GETTING_NEW_USER_LIST.getCode(), false, Message.ERROR_WHILE_GETTING_NEW_USER_LIST.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -231,6 +304,7 @@ public class UserService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện lấy ra danh sách người dùng !{} " + e.getMessage());
             result = new Result(Message.ERROR_WHILE_GETTING_USER_LIST.getCode(), false, Message.ERROR_WHILE_GETTING_USER_LIST.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -245,6 +319,7 @@ public class UserService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện lấy ra danh sách người dùng !{} " + e.getMessage());
             result = new Result(Message.ERROR_WHILE_GETTING_USER_LIST.getCode(), false, Message.ERROR_WHILE_SEARCHING_FOR_SONGS.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -259,6 +334,7 @@ public class UserService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện lấy danh sách tác giả !{} " + e.getMessage());
             result = new Result(Message.ERROR_GETTING_AUTHOR_LIST.getCode(), false, Message.ERROR_GETTING_AUTHOR_LIST.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -273,12 +349,13 @@ public class UserService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện lấy danh sách tác giả !{} " + e.getMessage());
             result = new Result(Message.ERROR_GETTING_AUTHOR_LIST.getCode(), false, Message.ERROR_GETTING_AUTHOR_LIST.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
     }
 
-    public Map<Object, Object> updateStatusUser(String id, String account, String status) {
+    public Map<Object, Object> updateStatusUser(String id, String status) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
@@ -286,6 +363,7 @@ public class UserService {
             finalResult.put(Constant.RESPONSE_KEY.DATA, this.userRepository.findById(id).orElse(null));
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện cập nhật trạng thái người dùng! {} " + e.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new User());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -296,10 +374,16 @@ public class UserService {
         Result result = Result.OK();
         try {
             List<SelectValue> data = this.userRepository.getArtisForSelect();
-            finalResult.put(Constant.RESPONSE_KEY.DATA, data);
+            if (!data.isEmpty()) {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, data);
+            } else {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
+            }
+
         } catch (Exception e) {
             System.out.println("Lỗi khi lấy ra data tác giả trong select! {} " + e.getMessage());
             result = new Result(Message.ERROR_WHEN_GETTING_AUTHOR_DATA_TO_FILL_IN_SELECT_BOX.getCode(), false, Message.ERROR_WHEN_GETTING_AUTHOR_DATA_TO_FILL_IN_SELECT_BOX.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -310,10 +394,15 @@ public class UserService {
         Result result = Result.OK();
         try {
             List<String> data = this.userRepository.getEmailUser();;
-            finalResult.put(Constant.RESPONSE_KEY.DATA, data);
+            if (!data.isEmpty()) {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, data);
+            } else {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
+            }
         } catch (Exception e) {
             System.out.println("Lỗi khi lấy ra data tác giả trong select! {} " + e.getMessage());
             result = new Result(Message.ERROR_WHEN_GETTING_AUTHOR_DATA_TO_FILL_IN_SELECT_BOX.getCode(), false, Message.ERROR_WHEN_GETTING_AUTHOR_DATA_TO_FILL_IN_SELECT_BOX.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;

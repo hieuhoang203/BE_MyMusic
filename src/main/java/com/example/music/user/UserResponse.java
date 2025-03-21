@@ -21,7 +21,7 @@ public interface UserResponse {
     @Value("#{target.avatar}")
     String getAvatar();
 
-    @Value("#{target.role}")
-    String getRole();
+    @Value("#{target.status}")
+    String getStatus();
 
 }

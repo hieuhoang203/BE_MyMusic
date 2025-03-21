@@ -38,7 +38,6 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     public Map<Object, Object> createAccountUser(AccountRequest request) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
@@ -83,7 +82,6 @@ public class AuthService {
             System.out.println("Xảy ra lỗi khi tạo mới người dùng {} " + e.getMessage());
             finalResult.put(Constant.RESPONSE_KEY.DATA, request);
             result = new Result(Message.UNABLE_TO_CREATE_ACCOUNT.getCode(), false, Message.UNABLE_TO_CREATE_ACCOUNT.getMessage());
-            throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -120,7 +118,7 @@ public class AuthService {
     public Map<Object, Object> login(LoginRequest login) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
-        finalResult.put(Constant.RESPONSE_KEY.DATA, login);
+
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPass()));
@@ -141,6 +139,7 @@ public class AuthService {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             result = new Result(Message.CANNOT_LOG_IN.getCode(), false, Message.CANNOT_LOG_IN.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new LoginRequest());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;

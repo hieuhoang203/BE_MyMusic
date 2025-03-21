@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(value = "/song/admin")
+@RequestMapping(value = "/song")
 @CrossOrigin("*")
 public class SongAdminController {
 

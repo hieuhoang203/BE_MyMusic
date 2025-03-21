@@ -60,13 +60,13 @@ public class AlbumController {
 //    }
 
     @GetMapping(value = "/admin")
-    public CompletableFuture<ResponseData> getAllForSelectInput() {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.albumService.getAlbumSelect()));
+    public ResponseData getAllForSelectInput() {
+        return ResponseData.createResponse(this.albumService.getAlbumSelect());
     }
 
     @GetMapping(value = "/artis/{artis}")
-    public CompletableFuture<ResponseData> getAllForSelectInput(@PathVariable String artis) {
-        return CompletableFuture.completedFuture(ResponseData.createResponse(this.albumService.getAlbumSelect(artis)));
+    public ResponseData getAllForSelectInput(@PathVariable String artis) {
+        return ResponseData.createResponse(this.albumService.getAlbumSelect(artis));
     }
 
 }
