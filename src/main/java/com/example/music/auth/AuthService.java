@@ -19,7 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -61,7 +62,6 @@ public class AuthService {
                 finalResult.put(Constant.RESPONSE_KEY.DATA, data);
                 return finalResult;
             }
-            Date create = new Date(System.currentTimeMillis());
 
             ApiResponse apiResponse = cloudinary.api().resourceByAssetID("6089f07ca3500cc8c9362a3edb3be8d7", ObjectUtils.emptyMap());
 
@@ -69,7 +69,7 @@ public class AuthService {
                     .id(UUID.randomUUID().toString())
                     .name(request.getName())
                     .avatar(apiResponse.get("url").toString())
-                    .create_date(create)
+                    .create_date(new Timestamp(new Date().getTime()))
                     .login(request.getLogin())
                     .password(passwordEncoder.encode(request.getPass()))
                     .role(String.valueOf(Constant.Role.USER))
@@ -94,12 +94,11 @@ public class AuthService {
         finalResult.put(Constant.RESPONSE_KEY.DATA, request);
         try {
             ApiResponse apiResponse = cloudinary.api().resourceByAssetID("6089f07ca3500cc8c9362a3edb3be8d7", ObjectUtils.emptyMap());
-
             User user = User.builder()
                     .id(UUID.randomUUID().toString())
                     .name(request.getName())
                     .avatar(apiResponse.get("url").toString())
-                    .create_date(new Date(new java.util.Date().getTime()))
+                    .create_date(new Timestamp(new Date().getTime()))
                     .login(request.getLogin())
                     .password(passwordEncoder.encode(request.getPass()))
                     .role(String.valueOf(Constant.Role.ARTIS))

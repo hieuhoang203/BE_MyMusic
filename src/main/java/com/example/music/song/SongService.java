@@ -20,11 +20,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.sql.Date;
-import java.util.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -189,7 +195,7 @@ public class SongService {
                     .url(resultSound.get("secure_url").toString())
                     .duration(dto.getDuration())
                     .album(album)
-                    .create_date(new Date(new java.util.Date().getTime()))
+                    .create_date(new Timestamp(new Date().getTime()))
                     .create_by("SUBLIME_SYSTEM")
                     .view(0)
                     .status(Constant.Status.Activate)
@@ -276,7 +282,7 @@ public class SongService {
             song.setAlbum(album);
             song.setDuration(dto.getDuration());
             song.setName(dto.getName());
-            song.setUpdate_date(new Date(new java.util.Date().getTime()));
+            song.setUpdate_date(new Timestamp(new Date().getTime()));
             song.setUpdate_by("SUBLIME_SYSTEM");
             saveSong(dto, songGenresSet, ownSet, song);
             finalResult.put(Constant.RESPONSE_KEY.DATA, song);
@@ -298,7 +304,7 @@ public class SongService {
                     .id(UUID.randomUUID().toString())
                     .genres(genres)
                     .song(song)
-                    .create_date(new Date(new java.util.Date().getTime()))
+                    .create_date(new Timestamp(new Date().getTime()))
                     .create_by("SUBLIME_SYSTEM")
                     .status(Constant.Status.Activate)
                     .build();
@@ -313,7 +319,7 @@ public class SongService {
                     .id(UUID.randomUUID().toString())
                     .author(artis)
                     .work(song)
-                    .create_date(new Date(new java.util.Date().getTime()))
+                    .create_date(new Timestamp(new Date().getTime()))
                     .create_by("SUBLIME_SYSTEM")
                     .status(Constant.Status.Activate)
                     .build();

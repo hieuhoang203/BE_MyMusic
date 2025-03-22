@@ -8,10 +8,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.util.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +46,7 @@ public class GenresService {
                     .code(genresDTO.getCode())
                     .name(genresDTO.getName())
                     .status(Constant.Status.Activate)
-                    .create_date(new Date(new java.util.Date().getTime()))
+                    .create_date(new Timestamp(new Date().getTime()))
                     .create_by("SUBLIME_SYSTEM")
                     .build();
             this.genresRepository.save(genres);
@@ -61,7 +65,7 @@ public class GenresService {
         Result result = Result.OK();
 
         try {
-            if (genresDTO.getCode().isEmpty() || genresRepository.checkCode(genresDTO.getCode()) != null) {
+            if (genresDTO.getCode().isEmpty()) {
                 result = new Result(Message.INVALID_MUSIC_GENRE_CODE.getCode(), false, Message.INVALID_MUSIC_GENRE_CODE.getMessage());
                 finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, genresDTO);
@@ -83,7 +87,7 @@ public class GenresService {
             } else {
                 genres.setCode(genresDTO.getCode());
                 genres.setName(genresDTO.getName());
-                genres.setUpdate_date(new Date(new java.util.Date().getTime()));
+                genres.setUpdate_date(new Timestamp(new Date().getTime()));
                 genres.setUpdate_by("SUBLIME_SYSTEM");
                 this.genresRepository.save(genres);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, genres);

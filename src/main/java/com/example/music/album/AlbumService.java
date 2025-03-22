@@ -13,9 +13,15 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -82,7 +88,7 @@ public class AlbumService {
                     .avatar(r.get("secure_url").toString())
                     .artis(artis)
                     .release_date(new Date(simpleDateFormat.parse(albumDTO.getRelease_date()).getTime()))
-                    .create_date(new Date(new java.util.Date().getTime()))
+                    .create_date(new Timestamp(new java.util.Date().getTime()))
                     .status(Constant.Status.Activate)
                     .build();
             this.albumRepository.save(album);
@@ -115,7 +121,7 @@ public class AlbumService {
             album.setName(albumDTO.getName());
             album.setArtis(artis);
             album.setRelease_date(new Date(simpleDateFormat.parse(albumDTO.getRelease_date()).getTime()));
-            album.setUpdate_date(new Date(new java.util.Date().getTime()));
+            album.setUpdate_date(new Timestamp(new java.util.Date().getTime()));
             album.setUpdate_by(artis.getName());
             this.albumRepository.save(album);
             finalResult.put(Constant.RESPONSE_KEY.DATA, album);
@@ -135,7 +141,7 @@ public class AlbumService {
             Optional<Album> album = albumRepository.findById(id);
             if (album.isPresent()) {
                 album.get().setStatus(status);
-                album.get().setUpdate_date(new Date(System.currentTimeMillis()));
+                album.get().setUpdate_date(new Timestamp(new java.util.Date().getTime()));
                 album.get().setUpdate_by(album.get().getArtis().getName());
                 albumRepository.save(album.get());
             } else {

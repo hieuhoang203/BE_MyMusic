@@ -11,13 +11,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.sql.Date;
-import java.text.ParseException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -174,7 +178,8 @@ public class UserService {
                     .password(passwordEncoder.encode("0966628527"))
                     .birthday(new Date(simpleDateFormat.parse(dto.getBirthday()).getTime()))
                     .avatar(urlAvt.get("secure_url").toString())
-                    .create_date(new Date(new java.util.Date().getTime()))
+                    .create_date(new Timestamp(new java.util.Date().getTime()))
+                    .create_by(Constant.Create.HVH)
                     .status(Constant.Status.Activate)
                     .role(dto.getRole())
                     .build();
@@ -263,7 +268,7 @@ public class UserService {
                     : dto.getRole().trim().equalsIgnoreCase("Artis") ? String.valueOf(Constant.Role.ARTIS) : String.valueOf(Constant.Role.USER));
             user.setName(dto.getName().trim());
             user.setBirthday(new Date(simpleDateFormat.parse(dto.getBirthday()).getTime()));
-            user.setUpdate_date(new Date(new java.util.Date().getTime()));
+            user.setUpdate_date(new Timestamp(new java.util.Date().getTime()));
             user.setGender(dto.getGender());
             this.userRepository.save(user);
             finalResult.put(Constant.RESPONSE_KEY.DATA, user);
