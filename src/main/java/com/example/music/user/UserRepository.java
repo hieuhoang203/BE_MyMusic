@@ -34,17 +34,17 @@ public interface UserRepository extends JpaRepository<User, String> {
     Page<UserResponse> getUserByStatus(@Param("status") String status, Pageable pageable);
 
     @Query(value = "select u.id as 'id', u.name as 'name', u.avatar as 'avatar', u.gender as 'gender'\n" +
-            ", u.birthday as 'birthday', COALESCE(count(o.work), 0) as 'songs', COALESCE(count(f.tbl_user), 0) as 'follows', u.status as 'status' from tbl_user u\n" +
-            "left join follow f on u.id = f.idol\n" +
-            "left join own o on u.id = o.author\n" +
+            ", u.birthday as 'birthday', COALESCE(count(o.work), 0) as 'songs', COALESCE(count(f.id), 0) as 'follows', u.status as 'status' from tbl_user u\n" +
+            "left join tbl_follow f on u.id = f.idol\n" +
+            "left join tbl_own o on u.id = o.author\n" +
             "where u.role = 'ARTIS'\n" +
             "group by u.id order by u.create_date desc ", nativeQuery = true)
     Page<ArtisResponse> getAllArtis(Pageable pageable);
 
     @Query(value = "select u.id as 'id', u.name as 'name', u.avatar as 'avatar', u.gender as 'gender'\n" +
-            ", u.birthday as 'birthday', COALESCE(count(o.work), 0) as 'songs', COALESCE(count(f.tbl_user), 0) as 'follows', u.status as 'status' from tbl_user u\n" +
-            "left join follow f on u.id = f.idol\n" +
-            "left join own o on u.id = o.author\n" +
+            ", u.birthday as 'birthday', COALESCE(count(o.work), 0) as 'songs', COALESCE(count(f.id), 0) as 'follows', u.status as 'status' from tbl_user u\n" +
+            "left join tbl_follow f on u.id = f.idol\n" +
+            "left join tbl_own o on u.id = o.author\n" +
             "where u.role = 'ARTIS' and u.status = :status\n" +
             "group by u.id order by u.create_date desc ", nativeQuery = true)
     Page<ArtisResponse> getArtisByStatus(@Param("status") String status, Pageable pageable);
