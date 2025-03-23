@@ -172,7 +172,7 @@ public class UserService {
             User user = User.builder()
                     .id(UUID.randomUUID().toString())
                     .name(dto.getName().trim())
-                    .gender(Boolean.valueOf(dto.getGender()))
+                    .gender(dto.getGender())
                     .login(dto.getEmail())
 //                    .password(passwordEncoder.encode(dto.getPassword()))
                     .password(passwordEncoder.encode("0966628527"))
