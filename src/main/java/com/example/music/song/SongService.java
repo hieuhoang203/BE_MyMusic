@@ -9,15 +9,18 @@ import com.example.music.comon.Message;
 import com.example.music.comon.Result;
 import com.example.music.genres.Genres;
 import com.example.music.genres.GenresRepository;
+import com.example.music.genres.GenresResponse;
 import com.example.music.own.Own;
 import com.example.music.own.OwnRepository;
 import com.example.music.own.WorkRequest;
 import com.example.music.song_genres.SongGenres;
 import com.example.music.song_genres.SongGenresRepository;
+import com.example.music.user.ArtisResponse;
 import com.example.music.user.User;
 import com.example.music.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -61,15 +64,45 @@ public class SongService {
             "resource_type", "video"
     );
 
+    public List<SongResponse> convertSongs(List<Song> songs) {
+        List<SongResponse> data = new ArrayList<>();
+        List<GenresResponse> genres;
+        List<ArtisResponse> artis;
+        for (Song song : songs) {
+            Album album = this.albumRepository.findById(song.getId()).orElse(null);
+            genres = this.genresRepository.getGenresBySong(song.getId());
+            artis = this.userRepository.getArtisByOwns(song.getId());
+            SongResponse songResponse = SongResponse.builder()
+                                        .id(song.getId())
+                                        .name(song.getName())
+                                        .avatar(song.getAvatar())
+                                        .url(song.getUrl())
+                                        .view(song.getView())
+                                        .duration(song.getDuration())
+                                        .album(album)
+                                        .genres(genres)
+                                        .artists(artis)
+                                        .status(song.getStatus())
+                                        .build();
+            data.add(songResponse);
+        }
+        return data;
+    }
+
     public Map<Object, Object> getAllSong(Pageable pageable) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
-            Page<Song> songs = this.songRepository.getAllSong(pageable);
-            if (songs.isEmpty()) {
+            List<Song> getAllSongs = this.songRepository.getAllSong();
+            if (getAllSongs.isEmpty()) {
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
             } else {
-                finalResult.put(Constant.RESPONSE_KEY.DATA, songs);
+                List<SongResponse> songResponses = convertSongs(getAllSongs);
+                int start = (int) pageable.getOffset();
+                int end = Math.min((start + pageable.getPageSize()), songResponses.size());
+
+                List<SongResponse> pageContent = songResponses.subList(start, end);
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new PageImpl<>(pageContent, pageable, songResponses.size()));
             }
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện lấy ra danh sách bài hát! {} " + e.getMessage());
@@ -332,11 +365,17 @@ public class SongService {
         Result result = Result.OK();
 
         try {
-            Page<Song> songs = this.songRepository.getSong(pageable, status);
-            if (songs.isEmpty()) {
+            List<Song> getSongByStatus = this.songRepository.select(status);
+            if (getSongByStatus.isEmpty()) {
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
             } else {
-                finalResult.put(Constant.RESPONSE_KEY.DATA, songs);
+                List<SongResponse> songResponses = convertSongs(getSongByStatus);
+
+                int start = (int) pageable.getOffset();
+                int end = Math.min((start + pageable.getPageSize()), songResponses.size());
+
+                List<SongResponse> pageContent = songResponses.subList(start, end);
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new PageImpl<>(pageContent, pageable, songResponses.size()));
             }
         } catch (Exception e) {
             System.out.println("Xảy ra lỗi khi thực hiện lấy danh sách bài hát theo trạng thái! {} " + e.getMessage());

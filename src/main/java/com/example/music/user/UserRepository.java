@@ -16,38 +16,45 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
+    String artisResponseQuery = "u.id as 'id', u.name as 'name', u.avatar as 'avatar', u.gender as 'gender', u.birthday as 'birthday', COALESCE(count(o.work), 0) as 'songs', COALESCE(count(f.id), 0) as 'follows', u.status as 'status'";
+
+    String userResponseQuery = "u.id as 'id', u.name as 'name', u.avatar as 'avatar', u.login as 'email', u.gender as 'gender', u.birthday as 'birthday', u.create_date as 'dateCreate', u.status as 'status'";
+
     @Query(value = "select * from tbl_user where status = :status order by create_date desc", nativeQuery = true)
     List<User> selectUser(@Param("status") String status);
 
     @Query(value = "select * from tbl_user where status = :status order by create_date desc", nativeQuery = true)
     Page<User> getUser(@Param("status") String status, Pageable pageable);
 
-    @Query(value = "select u.id as 'id', u.name as 'name', u.avatar as 'avatar', u.login as 'email', u.gender as 'gender', u.birthday as 'birthday', " +
-            "u.create_date as 'dateCreate', u.status as 'status' from tbl_user u " +
+    @Query(value = "select " + userResponseQuery + " from tbl_user u " +
             "where u.role = :role and u.status = 'Activate' order by u.create_date desc limit 3", nativeQuery = true)
     List<UserResponse> getNewUserOrArtis(@Param("role") String role);
 
-    @Query(value = "select u.id as 'id', u.name as 'name', u.avatar as 'avatar', u.login as 'email', u.gender as 'gender', u.birthday as 'birthday', u.create_date as 'dateCreate', u.status as 'status' from tbl_user u where u.role = 'USER' or u.role = 'ADMIN' order by u.create_date desc", nativeQuery = true)
+    @Query(value = "select " + userResponseQuery + " from tbl_user u where u.role = 'USER' or u.role = 'ADMIN' order by u.create_date desc", nativeQuery = true)
     Page<UserResponse> getAllUser(Pageable pageable);
 
     @Query(value = "select u.id as 'id', u.name as 'name', u.avatar as 'avatar', u.gender as 'gender', u.login as 'email', u.birthday as 'birthday', u.create_date as 'dateCreate', u.status as 'status' from tbl_user u where u.role = 'USER' or u.role = 'ADMIN' and u.status = :status order by u.create_date desc", nativeQuery = true)
     Page<UserResponse> getUserByStatus(@Param("status") String status, Pageable pageable);
 
-    @Query(value = "select u.id as 'id', u.name as 'name', u.avatar as 'avatar', u.gender as 'gender'\n" +
-            ", u.birthday as 'birthday', COALESCE(count(o.work), 0) as 'songs', COALESCE(count(f.id), 0) as 'follows', u.status as 'status' from tbl_user u\n" +
+    @Query(value = "select " + artisResponseQuery + " from tbl_user u\n" +
             "left join tbl_follow f on u.id = f.idol\n" +
             "left join tbl_own o on u.id = o.author\n" +
             "where u.role = 'ARTIS'\n" +
             "group by u.id order by u.create_date desc ", nativeQuery = true)
     Page<ArtisResponse> getAllArtis(Pageable pageable);
 
-    @Query(value = "select u.id as 'id', u.name as 'name', u.avatar as 'avatar', u.gender as 'gender'\n" +
-            ", u.birthday as 'birthday', COALESCE(count(o.work), 0) as 'songs', COALESCE(count(f.id), 0) as 'follows', u.status as 'status' from tbl_user u\n" +
+    @Query(value = "select " + artisResponseQuery + " from tbl_user u\n" +
             "left join tbl_follow f on u.id = f.idol\n" +
             "left join tbl_own o on u.id = o.author\n" +
             "where u.role = 'ARTIS' and u.status = :status\n" +
             "group by u.id order by u.create_date desc ", nativeQuery = true)
     Page<ArtisResponse> getArtisByStatus(@Param("status") String status, Pageable pageable);
+
+    @Query(value = "select " + artisResponseQuery + " from tbl_user u\n" +
+            "left join tbl_follow f on u.id = f.idol\n" +
+            "left join tbl_own o on u.id = o.author\n" +
+            "where o.work = :work", nativeQuery = true)
+    List<ArtisResponse> getArtisByOwns(@Param("work") String work);
 
     @Modifying
     @Query(value = "update tbl_user set status = :status where id = :id", nativeQuery = true)

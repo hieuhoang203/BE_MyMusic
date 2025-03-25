@@ -26,4 +26,7 @@ public interface SongRepository extends JpaRepository<Song, String> {
     @Query(value = "select * from tbl_song order by create_date desc", nativeQuery = true)
     Page<Song> getAllSong(Pageable pageable);
 
+    @Query(value = "select * from tbl_song order by create_date desc", nativeQuery = true)
+    List<Song> getAllSong();
+
 }

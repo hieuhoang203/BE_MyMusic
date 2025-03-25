@@ -45,6 +45,7 @@ public class Song implements Serializable {
     private Album album;
 
     @OneToMany(mappedBy = "work",fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Own> owns;
 
     @Column(name = "url")
@@ -57,6 +58,7 @@ public class Song implements Serializable {
     private Integer view;
 
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<SongGenres> songGenres;
 
     @Column(name = "create_date")
