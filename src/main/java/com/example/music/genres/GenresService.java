@@ -131,8 +131,6 @@ public class GenresService {
         try {
             Page<Genres> genres = this.genresRepository.getAll(pageable);
             if (genres.isEmpty()) {
-                result = new Result(Message.LIST_IS_EMPTY.getCode(), false, Message.LIST_IS_EMPTY.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
                 return finalResult;
             } else {
@@ -178,8 +176,6 @@ public class GenresService {
         try {
             List<SelectValue> list = this.genresRepository.getGenresForSelect();
             if (list.isEmpty()) {
-                result = new Result(Message.GENRES_DOES_NOT_EXIST.getCode(), false, Message.GENRES_DOES_NOT_EXIST.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
             } else {
                 finalResult.put(Constant.RESPONSE_KEY.DATA, list);

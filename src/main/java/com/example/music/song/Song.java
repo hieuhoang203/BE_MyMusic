@@ -45,7 +45,6 @@ public class Song implements Serializable {
     private Album album;
 
     @OneToMany(mappedBy = "work",fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Own> owns;
 
     @Column(name = "url")

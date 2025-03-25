@@ -1,18 +1,9 @@
 package com.example.music.comon;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+public interface SelectValue {
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-public class SelectValue {
+    String getValue();
 
-    private String value;
-
-    private String label;
+    String getLabel();
 
 }

@@ -18,6 +18,7 @@ import com.example.music.user.User;
 import com.example.music.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -66,10 +67,7 @@ public class SongService {
         try {
             Page<Song> songs = this.songRepository.getAllSong(pageable);
             if (songs.isEmpty()) {
-                result = new Result(Message.LIST_IS_EMPTY.getCode(), false, Message.LIST_IS_EMPTY.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
-                return finalResult;
             } else {
                 finalResult.put(Constant.RESPONSE_KEY.DATA, songs);
             }
@@ -329,16 +327,16 @@ public class SongService {
         this.ownRepository.saveAll(ownSet);
     }
 
-    public Map<Object, Object> getSongByStatus(String status, Long pageable) {
+    public Map<Object, Object> getSongByStatus(String status, Pageable pageable) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
 
         try {
-            List<Song> songs = this.songRepository.getSong(status);
+            Page<Song> songs = this.songRepository.getSong(pageable, status);
             if (songs.isEmpty()) {
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
             } else {
-                finalResult.put(Constant.RESPONSE_KEY.DATA, songs.stream().skip(pageable * 3).limit(3).toList());
+                finalResult.put(Constant.RESPONSE_KEY.DATA, songs);
             }
         } catch (Exception e) {
             System.out.println("Xảy ra lỗi khi thực hiện lấy danh sách bài hát theo trạng thái! {} " + e.getMessage());

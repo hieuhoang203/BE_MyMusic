@@ -25,10 +25,10 @@ public class SongArtisController {
     @Autowired
     private SongService songService;
 
-    @GetMapping(value = "")
-    public ResponseData getObject(@RequestParam(name = "status", defaultValue = "Wait") String status, @RequestParam(name = "page", defaultValue = "0") Long page) {
-        return ResponseData.createResponse(this.songService.getSongByStatus(status, page));
-    }
+//    @GetMapping(value = "")
+//    public ResponseData getObject(@RequestParam(name = "status", defaultValue = "Wait") String status, @RequestParam(name = "page", defaultValue = "0") Long page) {
+//        return ResponseData.createResponse(this.songService.getSongByStatus(status, page));
+//    }
 
 //    @GetMapping(value = "/select")
 //    public ResponseEntity<Map<Long, Song select(@RequestParam(value = "status", defaultValue = "Activate") String status) {
