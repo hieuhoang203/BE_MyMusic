@@ -73,20 +73,40 @@ public class SongService {
             genres = this.genresRepository.getGenresBySong(song.getId());
             artis = this.userRepository.getArtisByOwns(song.getId());
             SongResponse songResponse = SongResponse.builder()
-                                        .id(song.getId())
-                                        .name(song.getName())
-                                        .avatar(song.getAvatar())
-                                        .url(song.getUrl())
-                                        .view(song.getView())
-                                        .duration(song.getDuration())
-                                        .album(album)
-                                        .genres(genres)
-                                        .artists(artis)
-                                        .status(song.getStatus())
-                                        .build();
+                    .id(song.getId())
+                    .name(song.getName())
+                    .avatar(song.getAvatar())
+                    .url(song.getUrl())
+                    .view(song.getView())
+                    .duration(song.getDuration())
+                    .album(album)
+                    .genres(genres)
+                    .artists(artis)
+                    .status(song.getStatus())
+                    .build();
             data.add(songResponse);
         }
         return data;
+    }
+
+    public SongResponse convertSongs(Song song) {
+        List<GenresResponse> genres;
+        List<ArtisResponse> artis;
+        Album album = this.albumRepository.findById(song.getId()).orElse(null);
+        genres = this.genresRepository.getGenresBySong(song.getId());
+        artis = this.userRepository.getArtisByOwns(song.getId());
+        return SongResponse.builder()
+                .id(song.getId())
+                .name(song.getName())
+                .avatar(song.getAvatar())
+                .url(song.getUrl())
+                .view(song.getView())
+                .duration(song.getDuration())
+                .album(album)
+                .genres(genres)
+                .artists(artis)
+                .status(song.getStatus())
+                .build();
     }
 
     public Map<Object, Object> getAllSong(Pageable pageable) {
@@ -144,18 +164,10 @@ public class SongService {
         try {
             Song song = songRepository.findById(id).orElse(null);
             if (song == null) {
-                result = new Result(Message.SONG_DOES_NOT_EXIST.getCode(), false, Message.SONG_DOES_NOT_EXIST.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new WorkRequest());
                 return finalResult;
             } else {
-                WorkRequest dto = WorkRequest.builder()
-                        .name(song.getName())
-                        .album(song.getAlbum() != null ? song.getAlbum().getId() : null)
-                        .artis(song.getOwns())
-                        .genres(song.getSongGenres())
-                        .duration(song.getDuration())
-                        .build();
+                SongResponse dto = convertSongs(song);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
             }
         } catch (Exception e) {
@@ -185,11 +197,6 @@ public class SongService {
 
             if (dto.getName().isEmpty()) {
                 result = new Result(Message.SONG_NAME_IS_BLANK.getMessage(), false, Message.SONG_NAME_IS_BLANK.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
-            }
-
-            if (dto.getDuration() <= 0 || dto.getDuration() == null) {
-                result = new Result(Message.INVALID_SONG_DURATION.getCode(), false, Message.INVALID_SONG_DURATION.getMessage());
                 finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
             }
 
@@ -248,23 +255,8 @@ public class SongService {
 
         try {
 
-            if (type == 1 && dto.getAvatar().isEmpty()) {
-                result = new Result(Message.PHOTO_CANNOT_BE_BLANK.getCode(), false, Message.PHOTO_CANNOT_BE_BLANK.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
-            }
-
-            if (type == 1 && dto.getSound().isEmpty()) {
-                result = new Result(Message.AUDIO_FILE_CANNOT_BE_BLANK.getCode(), false, Message.AUDIO_FILE_CANNOT_BE_BLANK.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
-            }
-
             if (dto.getName().isEmpty()) {
                 result = new Result(Message.SONG_NAME_IS_BLANK.getMessage(), false, Message.SONG_NAME_IS_BLANK.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
-            }
-
-            if (dto.getDuration() <= 0 || dto.getDuration() == null) {
-                result = new Result(Message.INVALID_SONG_DURATION.getCode(), false, Message.INVALID_SONG_DURATION.getMessage());
                 finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
             }
 
