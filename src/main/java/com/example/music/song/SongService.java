@@ -249,7 +249,7 @@ public class SongService {
         return finalResult;
     }
 
-    public Map<Object, Object> adminUpdateSong(String id, SongRequest dto, Byte type) throws Exception {
+    public Map<Object, Object> adminUpdateSong(String id, SongRequest dto, Byte type) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
 
@@ -293,7 +293,7 @@ public class SongService {
                 song.setAvatar(resultImage.get("secure_url").toString());
             }
             if (dto.getSound() != null) {
-                String urlCloudinary = song.getAvatar();
+                String urlCloudinary = song.getUrl();
                 int start = urlCloudinary.indexOf("songs/");
                 int end = urlCloudinary.lastIndexOf(".");
                 cloudinary.api().deleteResources(Arrays.asList(urlCloudinary.substring(start, end)),
