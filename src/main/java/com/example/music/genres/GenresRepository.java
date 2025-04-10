@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public interface GenresRepository extends JpaRepository<Genres, String> {
 
+    String genresResponseQuery = "g.id as 'id', g.code as 'code', g.name as 'name'";
+
     @Query(value = "SELECT 1 FROM tbl_genres WHERE LOWER(code) = LOWER(:value) LIMIT 1", nativeQuery = true)
     Integer checkCode(@Param("value") String value);
 
@@ -32,5 +34,10 @@ public interface GenresRepository extends JpaRepository<Genres, String> {
 
     @Query(value = "select id as 'value', name as 'label' from tbl_genres where status = 'Activate'", nativeQuery = true)
     List<SelectValue> getGenresForSelect();
+
+    @Query(value = "select " + genresResponseQuery + " from tbl_genres g\n" +
+            "left join tbl_song_genres sg on sg.genres = g.id\n" +
+            "where g.status = 'Activate' and sg.song = :song", nativeQuery = true)
+    List<GenresResponse> getGenresBySong(@Param("song") String song);
 
 }

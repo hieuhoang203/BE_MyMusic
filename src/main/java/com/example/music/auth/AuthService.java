@@ -19,7 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -38,7 +39,6 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     public Map<Object, Object> createAccountUser(AccountRequest request) throws Exception {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
@@ -62,7 +62,6 @@ public class AuthService {
                 finalResult.put(Constant.RESPONSE_KEY.DATA, data);
                 return finalResult;
             }
-            Date create = new Date(System.currentTimeMillis());
 
             ApiResponse apiResponse = cloudinary.api().resourceByAssetID("6089f07ca3500cc8c9362a3edb3be8d7", ObjectUtils.emptyMap());
 
@@ -70,7 +69,7 @@ public class AuthService {
                     .id(UUID.randomUUID().toString())
                     .name(request.getName())
                     .avatar(apiResponse.get("url").toString())
-                    .create_date(create)
+                    .create_date(new Timestamp(new Date().getTime()))
                     .login(request.getLogin())
                     .password(passwordEncoder.encode(request.getPass()))
                     .role(String.valueOf(Constant.Role.USER))
@@ -83,7 +82,6 @@ public class AuthService {
             System.out.println("Xảy ra lỗi khi tạo mới người dùng {} " + e.getMessage());
             finalResult.put(Constant.RESPONSE_KEY.DATA, request);
             result = new Result(Message.UNABLE_TO_CREATE_ACCOUNT.getCode(), false, Message.UNABLE_TO_CREATE_ACCOUNT.getMessage());
-            throw e;
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -96,12 +94,11 @@ public class AuthService {
         finalResult.put(Constant.RESPONSE_KEY.DATA, request);
         try {
             ApiResponse apiResponse = cloudinary.api().resourceByAssetID("6089f07ca3500cc8c9362a3edb3be8d7", ObjectUtils.emptyMap());
-
             User user = User.builder()
                     .id(UUID.randomUUID().toString())
                     .name(request.getName())
                     .avatar(apiResponse.get("url").toString())
-                    .create_date(new Date(new java.util.Date().getTime()))
+                    .create_date(new Timestamp(new Date().getTime()))
                     .login(request.getLogin())
                     .password(passwordEncoder.encode(request.getPass()))
                     .role(String.valueOf(Constant.Role.ARTIS))
@@ -120,7 +117,7 @@ public class AuthService {
     public Map<Object, Object> login(LoginRequest login) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
-        finalResult.put(Constant.RESPONSE_KEY.DATA, login);
+
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPass()));
@@ -141,6 +138,7 @@ public class AuthService {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             result = new Result(Message.CANNOT_LOG_IN.getCode(), false, Message.CANNOT_LOG_IN.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new LoginRequest());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;

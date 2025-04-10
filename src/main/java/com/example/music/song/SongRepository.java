@@ -21,9 +21,12 @@ public interface SongRepository extends JpaRepository<Song, String> {
     List<Song> select(@Param("status") String status);
 
     @Query(value = "select * from tbl_song where status = :status order by create_date desc", nativeQuery = true)
-    List<Song> getSong(@Param("status") String status);
+    Page<Song> getSong(Pageable pageable, @Param("status") String status);
 
-    @Query(value = "select * from tbl_song where status = 'Activate' or status = 'ShutDown' order by create_date desc", nativeQuery = true)
+    @Query(value = "select * from tbl_song order by create_date desc", nativeQuery = true)
     Page<Song> getAllSong(Pageable pageable);
+
+    @Query(value = "select * from tbl_song order by create_date desc", nativeQuery = true)
+    List<Song> getAllSong();
 
 }

@@ -9,22 +9,32 @@ import com.example.music.comon.Message;
 import com.example.music.comon.Result;
 import com.example.music.genres.Genres;
 import com.example.music.genres.GenresRepository;
+import com.example.music.genres.GenresResponse;
 import com.example.music.own.Own;
 import com.example.music.own.OwnRepository;
 import com.example.music.own.WorkRequest;
 import com.example.music.song_genres.SongGenres;
 import com.example.music.song_genres.SongGenresRepository;
+import com.example.music.user.ArtisResponse;
 import com.example.music.user.User;
 import com.example.music.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.sql.Date;
-import java.util.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -54,88 +64,78 @@ public class SongService {
             "resource_type", "video"
     );
 
-    public Map<Object, Object> verifySong(Byte type ,SongRequest dto) {
-        Map<Object, Object> finalResult = new HashMap<>();
-        Result result = Result.OK();
-        Boolean check = true;
-
-        try {
-            if (type == 1 && dto.getAvatar().isEmpty()) {
-                result = new Result(Message.PHOTO_CANNOT_BE_BLANK.getCode(), false, Message.PHOTO_CANNOT_BE_BLANK.getMessage());
-                check = false;
-            }
-
-            if (type == 1 && dto.getSound().isEmpty()) {
-                result = new Result(Message.AUDIO_FILE_CANNOT_BE_BLANK.getCode(), false, Message.AUDIO_FILE_CANNOT_BE_BLANK.getMessage());
-                check = false;
-            }
-
-            if (dto.getName().isEmpty()) {
-                result = new Result(Message.SONG_NAME_IS_BLANK.getMessage(), false, Message.SONG_NAME_IS_BLANK.getMessage());
-                check = false;
-            }
-
-            if (dto.getDuration() <= 0 || dto.getDuration() == null) {
-                result = new Result(Message.INVALID_SONG_DURATION.getCode(), false, Message.INVALID_SONG_DURATION.getMessage());
-                check = false;
-            }
-
-            for (String genreId : dto.getGenres()) {
-                Genres genres = genresRepository.findById(genreId).orElse(null);
-                if (genres == null) {
-                    result = new Result(Message.MUSIC_GENRE_DOES_NOT_EXIST.getCode(), false, Message.MUSIC_GENRE_DOES_NOT_EXIST.getMessage());
-                    check = false;
-                    break;
-                }
-            }
-
-            for (String artisId : dto.getArtis()) {
-                User user = userRepository.findById(artisId).orElse(null);
-                if (user == null) {
-                    result = new Result(Message.AUTHOR_DOES_NOT_EXIST.getCode(), false, Message.AUTHOR_DOES_NOT_EXIST.getMessage());
-                    check = false;
-                    break;
-                }
-            }
-            if (check) {
-                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
-            } else {
-                finalResult.put(Constant.RESPONSE_KEY.DATA, new Song());
-            }
-        } catch (Exception e) {
-            System.out.println("Xảy ra lỗi khi xác thực thông tin! {} " + e.getMessage());
-            result = new Result(Message.UNABLE_TO_VERIFY_INFORMATION.getCode(), false, Message.UNABLE_TO_VERIFY_INFORMATION.getMessage());
+    public List<SongResponse> convertSongs(List<Song> songs) {
+        List<SongResponse> data = new ArrayList<>();
+        List<GenresResponse> genres;
+        List<ArtisResponse> artis;
+        for (Song song : songs) {
+            Album album = this.albumRepository.findById(song.getId()).orElse(null);
+            genres = this.genresRepository.getGenresBySong(song.getId());
+            artis = this.userRepository.getArtisByOwns(song.getId());
+            SongResponse songResponse = SongResponse.builder()
+                    .id(song.getId())
+                    .name(song.getName())
+                    .avatar(song.getAvatar())
+                    .url(song.getUrl())
+                    .view(song.getView())
+                    .duration(song.getDuration())
+                    .album(album)
+                    .genres(genres)
+                    .artists(artis)
+                    .status(song.getStatus())
+                    .build();
+            data.add(songResponse);
         }
+        return data;
+    }
 
-        finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
-        return finalResult;
+    public SongResponse convertSongs(Song song) {
+        List<GenresResponse> genres;
+        List<ArtisResponse> artis;
+        Album album = this.albumRepository.findById(song.getId()).orElse(null);
+        genres = this.genresRepository.getGenresBySong(song.getId());
+        artis = this.userRepository.getArtisByOwns(song.getId());
+        return SongResponse.builder()
+                .id(song.getId())
+                .name(song.getName())
+                .avatar(song.getAvatar())
+                .url(song.getUrl())
+                .view(song.getView())
+                .duration(song.getDuration())
+                .album(album)
+                .genres(genres)
+                .artists(artis)
+                .status(song.getStatus())
+                .build();
     }
 
     public Map<Object, Object> getAllSong(Pageable pageable) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
         try {
-            Page<Song> songs = this.songRepository.getAllSong(pageable);
-            if (songs.isEmpty()) {
-                result = new Result(Message.LIST_IS_EMPTY.getCode(), false, Message.LIST_IS_EMPTY.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.DATA, null);
-                return finalResult;
+            List<Song> getAllSongs = this.songRepository.getAllSong();
+            if (getAllSongs.isEmpty()) {
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
             } else {
-                finalResult.put(Constant.RESPONSE_KEY.DATA, songs);
+                List<SongResponse> songResponses = convertSongs(getAllSongs);
+                int start = (int) pageable.getOffset();
+                int end = Math.min((start + pageable.getPageSize()), songResponses.size());
+
+                List<SongResponse> pageContent = songResponses.subList(start, end);
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new PageImpl<>(pageContent, pageable, songResponses.size()));
             }
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện lấy ra danh sách bài hát! {} " + e.getMessage());
             result = new Result(Message.ERROR_WHILE_RETRIEVING_SONG_LIST.getCode(), false, Message.ERROR_WHILE_RETRIEVING_SONG_LIST.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
     }
 
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
     public Map<Object, Object> changeStatusSong(String id, String status) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
-        finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
 
         try {
             Song song = songRepository.findById(id).orElse(null);
@@ -151,7 +151,7 @@ public class SongService {
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện cập nhật trạng thái bài hát! {} " + e.getMessage());
             result = new Result(Message.CANNOT_UPDATE_STATUS.getCode(), false, Message.CANNOT_UPDATE_STATUS.getMessage());
-            throw e;
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -160,37 +160,28 @@ public class SongService {
     public Map<Object, Object> detailSong(String id) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
-        finalResult.put(Constant.RESPONSE_KEY.DATA, new Song());
+
         try {
             Song song = songRepository.findById(id).orElse(null);
             if (song == null) {
-                result = new Result(Message.SONG_DOES_NOT_EXIST.getCode(), false, Message.SONG_DOES_NOT_EXIST.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new WorkRequest());
                 return finalResult;
             } else {
-                WorkRequest dto = WorkRequest.builder()
-                        .name(song.getName())
-                        .album(song.getAlbum() != null ? song.getAlbum().getId() : null)
-                        .artis(song.getOwns())
-                        .genres(song.getSongGenres())
-                        .duration(song.getDuration())
-                        .build();
+                SongResponse dto = convertSongs(song);
                 finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
             }
         } catch (Exception e) {
             System.out.println("Lỗi khi thực hiện tìm kiếm bài hát! {} " + e.getMessage());
             result = new Result(Message.ERROR_WHILE_SEARCHING_FOR_SONGS.getCode(), false, Message.ERROR_WHILE_SEARCHING_FOR_SONGS.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new Song());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
     }
 
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> adminInsertSong(SongRequest dto, Byte type) throws IOException {
+    public Map<Object, Object> adminInsertSong(SongRequest dto, Byte type) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
-        finalResult.put(Constant.RESPONSE_KEY.DATA, finalResult);
 
         try {
 
@@ -206,11 +197,6 @@ public class SongService {
 
             if (dto.getName().isEmpty()) {
                 result = new Result(Message.SONG_NAME_IS_BLANK.getMessage(), false, Message.SONG_NAME_IS_BLANK.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
-            }
-
-            if (dto.getDuration() <= 0 || dto.getDuration() == null) {
-                result = new Result(Message.INVALID_SONG_DURATION.getCode(), false, Message.INVALID_SONG_DURATION.getMessage());
                 finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
             }
 
@@ -247,7 +233,7 @@ public class SongService {
                     .url(resultSound.get("secure_url").toString())
                     .duration(dto.getDuration())
                     .album(album)
-                    .create_date(new Date(new java.util.Date().getTime()))
+                    .create_date(new Timestamp(new Date().getTime()))
                     .create_by("SUBLIME_SYSTEM")
                     .view(0)
                     .status(Constant.Status.Activate)
@@ -257,37 +243,20 @@ public class SongService {
         } catch (Exception e) {
             System.out.println("Xảy ra lỗi khi thực hiện tạo bài hát mới! {}: " + dto.toString());
             result = new Result(Message.CANNOT_CREATE_NEW_SONG.getCode(), false, Message.CANNOT_CREATE_NEW_SONG.getMessage());
-            throw e;
+            finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
     }
 
-    @Transactional(rollbackFor = {Exception.class, Throwable.class})
-    public Map<Object, Object> adminUpdateSong(String id, SongRequest dto, Byte type) throws Exception {
+    public Map<Object, Object> adminUpdateSong(String id, SongRequest dto, Byte type) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
-        finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
 
         try {
 
-            if (type == 1 && dto.getAvatar().isEmpty()) {
-                result = new Result(Message.PHOTO_CANNOT_BE_BLANK.getCode(), false, Message.PHOTO_CANNOT_BE_BLANK.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
-            }
-
-            if (type == 1 && dto.getSound().isEmpty()) {
-                result = new Result(Message.AUDIO_FILE_CANNOT_BE_BLANK.getCode(), false, Message.AUDIO_FILE_CANNOT_BE_BLANK.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
-            }
-
             if (dto.getName().isEmpty()) {
                 result = new Result(Message.SONG_NAME_IS_BLANK.getMessage(), false, Message.SONG_NAME_IS_BLANK.getMessage());
-                finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
-            }
-
-            if (dto.getDuration() <= 0 || dto.getDuration() == null) {
-                result = new Result(Message.INVALID_SONG_DURATION.getCode(), false, Message.INVALID_SONG_DURATION.getMessage());
                 finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
             }
 
@@ -324,7 +293,7 @@ public class SongService {
                 song.setAvatar(resultImage.get("secure_url").toString());
             }
             if (dto.getSound() != null) {
-                String urlCloudinary = song.getAvatar();
+                String urlCloudinary = song.getUrl();
                 int start = urlCloudinary.indexOf("songs/");
                 int end = urlCloudinary.lastIndexOf(".");
                 cloudinary.api().deleteResources(Arrays.asList(urlCloudinary.substring(start, end)),
@@ -336,14 +305,14 @@ public class SongService {
             song.setAlbum(album);
             song.setDuration(dto.getDuration());
             song.setName(dto.getName());
-            song.setUpdate_date(new Date(new java.util.Date().getTime()));
+            song.setUpdate_date(new Timestamp(new Date().getTime()));
             song.setUpdate_by("SUBLIME_SYSTEM");
             saveSong(dto, songGenresSet, ownSet, song);
             finalResult.put(Constant.RESPONSE_KEY.DATA, song);
         } catch (Exception e) {
             System.out.println("Xảy ra lỗi khi thực hiệ cập nhật bài hát ! {} " + dto.toString());
             result = new Result(Message.CANNOT_UPDATE_SONG.getCode(), false, Message.CANNOT_UPDATE_SONG.getMessage());
-            throw e;
+            finalResult.put(Constant.RESPONSE_KEY.DATA, dto);
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;
@@ -358,7 +327,7 @@ public class SongService {
                     .id(UUID.randomUUID().toString())
                     .genres(genres)
                     .song(song)
-                    .create_date(new Date(new java.util.Date().getTime()))
+                    .create_date(new Timestamp(new Date().getTime()))
                     .create_by("SUBLIME_SYSTEM")
                     .status(Constant.Status.Activate)
                     .build();
@@ -373,7 +342,7 @@ public class SongService {
                     .id(UUID.randomUUID().toString())
                     .author(artis)
                     .work(song)
-                    .create_date(new Date(new java.util.Date().getTime()))
+                    .create_date(new Timestamp(new Date().getTime()))
                     .create_by("SUBLIME_SYSTEM")
                     .status(Constant.Status.Activate)
                     .build();
@@ -383,20 +352,27 @@ public class SongService {
         this.ownRepository.saveAll(ownSet);
     }
 
-    public Map<Object, Object> getSongByStatus(String status, Long pageable) {
+    public Map<Object, Object> getSongByStatus(String status, Pageable pageable) {
         Map<Object, Object> finalResult = new HashMap<>();
         Result result = Result.OK();
-        finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
+
         try {
-            List<Song> songs = this.songRepository.getSong(status);
-            if (songs.isEmpty()) {
+            List<Song> getSongByStatus = this.songRepository.select(status);
+            if (getSongByStatus.isEmpty()) {
                 finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
             } else {
-                finalResult.put(Constant.RESPONSE_KEY.DATA, songs.stream().skip(pageable * 3).limit(3).toList());
+                List<SongResponse> songResponses = convertSongs(getSongByStatus);
+
+                int start = (int) pageable.getOffset();
+                int end = Math.min((start + pageable.getPageSize()), songResponses.size());
+
+                List<SongResponse> pageContent = songResponses.subList(start, end);
+                finalResult.put(Constant.RESPONSE_KEY.DATA, new PageImpl<>(pageContent, pageable, songResponses.size()));
             }
         } catch (Exception e) {
             System.out.println("Xảy ra lỗi khi thực hiện lấy danh sách bài hát theo trạng thái! {} " + e.getMessage());
             result = new Result(Message.SYSTEM_ERROR.getCode(), false, Message.SYSTEM_ERROR.getMessage());
+            finalResult.put(Constant.RESPONSE_KEY.DATA, new ArrayList<>());
         }
         finalResult.put(Constant.RESPONSE_KEY.RESULT, result);
         return finalResult;

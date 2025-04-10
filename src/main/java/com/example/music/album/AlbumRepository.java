@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public interface AlbumRepository extends JpaRepository<Album, String> {
 
+    String albumResponseQuery = "a.id as 'id', a.name as 'name', a.avatar as 'avatar', a.";
+
     @Modifying
     @Query(value = "update tbl_album set status = 'ShutDown' where id = ?1", nativeQuery = true)
     void updateStatus(@Param("id") String id);

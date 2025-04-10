@@ -55,12 +55,15 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/genres/save",
                         "/genres/verify",
+                        "/genres/update/**",
                         "/genres/change-status/**",
-                        "/genres/update/**"
+                        "/album/admin",
+                        "/user/get-artis-select"
                 ).hasRole(String.valueOf(Constant.Role.ADMIN))
+                .requestMatchers(
+                        "/song/**"
+                ).hasAnyRole(String.valueOf(Constant.Role.ADMIN), String.valueOf(Constant.Role.ARTIS))
                 .anyRequest().authenticated()
-                .and()
-                .formLogin().permitAll()
                 .and()
                 .logout().permitAll()
                 .and()
