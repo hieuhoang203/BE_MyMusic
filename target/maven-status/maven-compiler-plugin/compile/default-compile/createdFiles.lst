@@ -9,7 +9,9 @@ com\example\music\song\SongRequest.class
 com\example\music\favorite\Favorite.class
 com\example\music\favorite\FavoriteService.class
 com\example\music\album\Album.class
+com\example\music\genres\GenresResponse.class
 com\example\music\Application.class
+com\example\music\song\SongResponse$SongResponseBuilder.class
 com\example\music\security\JwtService.class
 com\example\music\user\UserResponse.class
 com\example\music\auth\AuthService.class
@@ -33,12 +35,15 @@ com\example\music\comon\Constant.class
 com\example\music\song\SongAdminController.class
 com\example\music\config\SecurityConfig.class
 com\example\music\security\JwtAuthEntryPoint.class
+com\example\music\song\SongResponse.class
 com\example\music\user\UserRequest$UserRequestBuilder.class
 com\example\music\mail\JavaMailService.class
 com\example\music\auth\AccountRequest$AccountRequestBuilder.class
 com\example\music\auth\AccountRequest.class
 com\example\music\user\ArtisResponse.class
 com\example\music\genres\GenresService.class
+com\example\music\album\AlbumResponse.class
+com\example\music\handle_exception\GlobalExceptionHandler.class
 com\example\music\data\DetailAccount.class
 com\example\music\user\UserRepository.class
 com\example\music\auth\LoginRequest$LoginRequestBuilder.class
