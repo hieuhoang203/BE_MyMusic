@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -79,7 +80,7 @@ public class UserController {
         return ResponseData.createResponse(this.userService.getUserByStatus(status, pageable));
     }
 
-    @GetMapping(value = "/update-status")
+    @PutMapping(value = "/update-status")
     public ResponseData updateStatus(@RequestParam(name = "id") String id, @RequestParam(name = "status") String status) {
         return ResponseData.createResponse(this.userService.updateStatusUser(id, status));
     }

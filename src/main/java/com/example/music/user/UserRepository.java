@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,9 +54,10 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query(value = "select " + artisResponseQuery + " from tbl_user u\n" +
             "left join tbl_follow f on u.id = f.idol\n" +
             "left join tbl_own o on u.id = o.author\n" +
-            "where o.work = :work", nativeQuery = true)
+            "where o.work = :work group by u.id", nativeQuery = true)
     List<ArtisResponse> getArtisByOwns(@Param("work") String work);
 
+    @Transactional
     @Modifying
     @Query(value = "update tbl_user set status = :status where id = :id", nativeQuery = true)
     void updateStatusUser(@Param("id") String id, @Param("status") String status);
