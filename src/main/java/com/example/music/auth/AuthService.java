@@ -73,7 +73,7 @@ public class AuthService {
                     .login(request.getLogin())
                     .password(passwordEncoder.encode(request.getPass()))
                     .role(String.valueOf(Constant.Role.USER))
-                    .create_by(Constant.Create.NTH)
+                    .create_by(Constant.Create.LTDT)
                     .status(Constant.Status.Activate)
                     .build();
             this.userRepository.save(user);

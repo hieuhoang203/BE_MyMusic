@@ -21,7 +21,7 @@ public class Constant {
 
     public interface Create {
         String HVH = "Hoàng Văn Hiếu";
-        String NTH = "Nguyễn Thanh Hòa";
+        String LTDT = "Thúy ăn cứt";
     }
 
 }
